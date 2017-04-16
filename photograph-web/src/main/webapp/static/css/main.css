@@ -1,0 +1,78 @@
+body{
+    background-color: currentcolor;
+}
+.select-active{
+    background-color: gainsboro;
+}
+.row{
+    padding: 0px;
+}
+.row img{
+    width: 100%;
+}
+.col-xs-3{
+    padding: 0px;
+}
+.img-div{
+    position: relative;
+}
+.bar{
+    display: none;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    opacity: 0.5;
+    z-index: 300;
+    padding-left: 5%;
+    background: -webkit-linear-gradient(left, black , white); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, black, white); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, black, white); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, black , white); /* 标准的语法 */
+}
+.img-title{
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+.navbar{
+    margin-bottom: 0px;
+    background-color: aliceblue;
+}
+.input-group{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding-right: 15px;
+}
+#row-div{
+    background-color: currentcolor;
+    max-width: 700px;
+}
+#top-btn{
+    position: fixed;
+    top: 85%;
+    right: 10px;
+    display: none;
+}
+#top-btn button{
+    opacity:0.7;
+}
+#load-div{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 9999;
+    width: 100%;
+    display: none;
+}
+.help{
+    position: fixed;
+    margin:auto;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+}

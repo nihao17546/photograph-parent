@@ -1,0 +1,15 @@
+.idea
+.project
+.svn
+*.iml
+target
+.settings
+.classpath
+lib
+*/lib
+*/source
+*/target
+*/test
+**/*.jar
+.DS_Store
+**/.cache-*
