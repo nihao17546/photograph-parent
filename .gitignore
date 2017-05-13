@@ -13,3 +13,4 @@ lib
 **/*.jar
 .DS_Store
 **/.cache-*
+jdbc.properties
