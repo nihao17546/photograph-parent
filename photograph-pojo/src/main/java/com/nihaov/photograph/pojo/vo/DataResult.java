@@ -4,7 +4,7 @@ package com.nihaov.photograph.pojo.vo;
  * Created by nihao on 17/4/12.
  */
 public class DataResult {
-    private Integer code;
+    private Integer code = 300;
     private String message;
     private Object result;
 
