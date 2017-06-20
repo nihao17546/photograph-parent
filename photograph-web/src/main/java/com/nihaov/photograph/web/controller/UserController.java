@@ -1,9 +1,12 @@
 package com.nihaov.photograph.web.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.google.common.base.Strings;
 import com.nihaov.photograph.common.utils.DesUtil;
 import com.nihaov.photograph.common.utils.WXUtil;
 import com.nihaov.photograph.dao.IUserDAO;
+import com.nihaov.photograph.pojo.po.IMGPO;
 import com.nihaov.photograph.pojo.po.UserPO;
 import com.nihaov.photograph.pojo.vo.DataResult;
 import com.nihaov.photograph.pojo.wx.WxUserInfo;
@@ -25,7 +28,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by nihao on 17/6/11.
@@ -177,5 +183,28 @@ public class UserController {
             dataResult.setMessage("收藏失败");
         }
         return JSON.toJSONString(dataResult);
+    }
+
+    @RequestMapping("/ownFavoList")
+    @ResponseBody
+    public String ownFavoList(HttpServletRequest request) {
+        DataResult dataResult = new DataResult();
+        String uid_ = request.getParameter("uid");
+        String page_ = request.getParameter("page");
+        String pageCount_ = request.getParameter("pageCount");
+        Long uid = Long.parseLong(uid_);
+        Integer page = Integer.parseInt(page_);
+        Integer pageCount = 30;
+        if(!Strings.isNullOrEmpty(pageCount_)){
+            pageCount = Integer.parseInt(pageCount_);
+        }
+        long count = userService.getFavoCount(uid);
+        List<IMGPO> data = userService.getFavoByUidPagination(uid,page,pageCount);
+        dataResult.setCode(200);
+        Map<String,Object> result = new HashMap<>();
+        result.put("count",count);
+        result.put("list",data);
+        dataResult.setResult(result);
+        return JSON.toJSONString(dataResult, SerializerFeature.WriteDateUseDateFormat);
     }
 }

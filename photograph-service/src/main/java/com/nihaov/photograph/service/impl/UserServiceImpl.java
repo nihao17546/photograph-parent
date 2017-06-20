@@ -1,16 +1,20 @@
 package com.nihaov.photograph.service.impl;
 
 import com.nihaov.photograph.common.utils.DesUtil;
+import com.nihaov.photograph.dao.IMGDAO;
 import com.nihaov.photograph.dao.IUserDAO;
+import com.nihaov.photograph.pojo.po.IMGPO;
 import com.nihaov.photograph.pojo.po.UserFavoPO;
 import com.nihaov.photograph.pojo.po.UserPO;
 import com.nihaov.photograph.service.IUserService;
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by nihao on 17/6/11.
@@ -21,6 +25,8 @@ public class UserServiceImpl implements IUserService {
 
     @Resource
     private IUserDAO userDAO;
+    @Resource
+    private IMGDAO imgDAO;
 
     private String userIdRegex = "^[0-9A-Za-z]{6,12}$";
 
@@ -87,5 +93,17 @@ public class UserServiceImpl implements IUserService {
         userFavoPO.setUid(uid);
         userFavoPO.setPicId(picId);
         return userDAO.insertFavo(userFavoPO);
+    }
+
+    @Override
+    public long getFavoCount(Long uid) {
+        return imgDAO.selectOwnCount(uid);
+    }
+
+    @Override
+    public List<IMGPO> getFavoByUidPagination(Long uid, Integer page, Integer pageCount) {
+        RowBounds rowBounds = new RowBounds((page-1)*pageCount,pageCount);
+        List<IMGPO> list = imgDAO.selectOwnFavo(uid,rowBounds);
+        return list;
     }
 }

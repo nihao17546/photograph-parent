@@ -7,4 +7,13 @@
     <insert id="insertError">
         insert IGNORE into tb_error(image_id,flag,created_at) values(#{imageId},1,now())
     </insert>
+    <select id="selectOwnCount" resultType="java.lang.Long">
+        select count(*) from tb_user_favo a,tb_img b
+        where a.uid=#{uid} and a.pic_id=b.id
+    </select>
+    <select id="selectOwnFavo" resultType="com.nihaov.photograph.pojo.po.IMGPO">
+        select b.* from tb_user_favo a,tb_img b
+        where a.uid=#{uid} and a.pic_id=b.id
+        order by a.created_at desc
+    </select>
 </mapper>
