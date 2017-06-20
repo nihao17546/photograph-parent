@@ -2,6 +2,7 @@ package com.nihaov.photograph.service.impl;
 
 import com.nihaov.photograph.common.utils.DesUtil;
 import com.nihaov.photograph.dao.IUserDAO;
+import com.nihaov.photograph.pojo.po.UserFavoPO;
 import com.nihaov.photograph.pojo.po.UserPO;
 import com.nihaov.photograph.service.IUserService;
 import org.slf4j.Logger;
@@ -51,5 +52,40 @@ public class UserServiceImpl implements IUserService {
     public boolean checkUserId(String userId) {
         UserPO checkPO = userDAO.selectByUserId(userId);
         return checkPO!=null;
+    }
+
+    @Transactional
+    @Override
+    public UserPO auth(UserPO userPO) {
+        if(userPO.getUnionId()==null){
+            throw new RuntimeException("unionId获取失败");
+        }
+        UserPO checkPO = userDAO.selectByUnionId(userPO.getUnionId());
+        if(checkPO==null){
+            userDAO.insert(userPO);
+        }
+        userPO.setPassword(null);
+        if(userPO.getId()==null){
+            userPO.setId(checkPO.getId());
+        }
+        return userPO;
+    }
+
+    @Override
+    public UserPO check(String checkKey) {
+        if(checkKey.startsWith("pph_&")){
+            return userDAO.selectByUnionId(checkKey.replaceFirst("pph_&",""));
+        }
+        else{
+            return userDAO.selectByUserId(checkKey);
+        }
+    }
+
+    @Override
+    public int favo(Long uid, Long picId) {
+        UserFavoPO userFavoPO = new UserFavoPO();
+        userFavoPO.setUid(uid);
+        userFavoPO.setPicId(picId);
+        return userDAO.insertFavo(userFavoPO);
     }
 }

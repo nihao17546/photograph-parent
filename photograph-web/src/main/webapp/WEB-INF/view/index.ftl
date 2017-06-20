@@ -7,6 +7,7 @@
     <title>发现</title>
     <meta name="keywords" content="美图,发现,美文,唯美">
     <meta name="description" content="">
+    <meta name="referrer" content="never">
     <link rel="shortcut icon" href="http://static.nihaov.com/static/img/favicon.ico">
     <#--<link href="http://static.nihaov.com/static/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
     <#--<link href="http://static.nihaov.com/static/libs/loader/loaderskit.css" rel="stylesheet">-->

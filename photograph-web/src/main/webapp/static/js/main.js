@@ -6,7 +6,6 @@ function getContextPath() {
 }
 
 var picArray=[];
-var compressPicPrefix="http://fdfs.nihaov.com/compress/250",picPrefix="http://fdfs.nihaov.com";
 var h1=0,h2=0,h3=0,h4=0;
 var put1=$('#put1'),put2=$('#put2'),put3=$('#put3'),put4=$('#put4');
 $('#load-div').height($(window).height());
@@ -31,7 +30,7 @@ $(function () {
         active($(this));
         $.ajax({
             type:'post',
-            url:'/find',
+            url:'/random',
             dataType: "json",
             success: function (data) {
                 for(var i=0;i<data.length;i++){
@@ -83,7 +82,7 @@ function appenPic(obj) {
         '<div class="bar"> ' +
         '<div class="img-title">'+obj.title+'</div> ' +
         '</div> ' +
-        '<img class="slide-img" alt="加载中..." position="'+picArray.length+'" i="'+picPrefix+obj.path+'" onclick="imgclick(this)" src="'+compressPicPrefix+obj.path+'" onload="imgload(this)" onerror="imgerror(this)"> ' +
+        '<img class="slide-img" alt="加载中..." position="'+picArray.length+'" i="'+obj.src+'" onclick="imgclick(this)" src="'+obj.compressSrc+'" onload="imgload(this)" onerror="imgerror(this)"> ' +
         '</div> ';
     var w=obj.width,h=obj.height;
     var to=h/w;
@@ -192,7 +191,7 @@ function search() {
             ifSearching=true;
             $.ajax({
                 type:'post',
-                url:'/query/image/'+nextPage+'/'+pageSize+'/'+searchKey,
+                url:'/query/'+nextPage+'/'+pageSize+'/'+searchKey,
                 dataType: "json",
                 success: function (data) {
                     var list = data.data;

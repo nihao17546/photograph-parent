@@ -8,4 +8,7 @@ import com.nihaov.photograph.pojo.po.UserPO;
 public interface IUserService {
     void regist(UserPO userPO);
     boolean checkUserId(String userId);
+    UserPO auth(UserPO userPO);
+    UserPO check(String checkKey);
+    int favo(Long uid,Long picId);
 }

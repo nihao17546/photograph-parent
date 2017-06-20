@@ -13,6 +13,7 @@ public class UserPO {
     private Integer gender;
     private String headPic;
     private String email;
+    private String unionId;
     private Date createdAt;
 
     public Long getId() {
@@ -69,6 +70,14 @@ public class UserPO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
     }
 
     public Date getCreatedAt() {
