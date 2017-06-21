@@ -53,8 +53,9 @@ public class ImgController {
     public String error(HttpServletRequest request){
         DataResult dataResult = new DataResult();
         String id_ = request.getParameter("picId");
+        String errMsg = request.getParameter("errMsg");
         if(!Strings.isNullOrEmpty(id_)){
-            imgdao.insertError(Long.parseLong(id_));
+            imgdao.insertError(Long.parseLong(id_),errMsg);
         }
         dataResult.setCode(200);
         return JSON.toJSONString(dataResult);

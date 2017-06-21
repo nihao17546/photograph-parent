@@ -20,4 +20,11 @@
     <select id="selectFavo" resultType="com.nihaov.photograph.pojo.po.ImagePO">
         select b.* from tb_user_favo a,tb_image b where a.uid=#{uid} a.pic_id=b.id order by a.created_at desc
     </select>
+    <delete id="deleteFavo">
+        delete from tb_user_favo where uid=#{uid} and pic_id=#{picId}
+    </delete>
+    <insert id="insertSuggestion">
+        insert into tb_suggesuion(uid,content,created_at)
+        values(#{uid},#{content},now())
+    </insert>
 </mapper>

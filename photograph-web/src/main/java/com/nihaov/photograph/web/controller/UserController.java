@@ -185,6 +185,16 @@ public class UserController {
         return JSON.toJSONString(dataResult);
     }
 
+    @RequestMapping("/rmFavo")
+    @ResponseBody
+    public String rmFavo(HttpServletRequest request) {
+        DataResult dataResult = new DataResult(200);
+        String uid_ = request.getParameter("uid");
+        String picId_ = request.getParameter("picId");
+        userDAO.deleteFavo(Long.parseLong(uid_),Long.parseLong(picId_));
+        return JSON.toJSONString(dataResult);
+    }
+
     @RequestMapping("/ownFavoList")
     @ResponseBody
     public String ownFavoList(HttpServletRequest request) {
@@ -194,7 +204,7 @@ public class UserController {
         String pageCount_ = request.getParameter("pageCount");
         Long uid = Long.parseLong(uid_);
         Integer page = Integer.parseInt(page_);
-        Integer pageCount = 30;
+        Integer pageCount = 9;
         if(!Strings.isNullOrEmpty(pageCount_)){
             pageCount = Integer.parseInt(pageCount_);
         }
@@ -204,7 +214,18 @@ public class UserController {
         Map<String,Object> result = new HashMap<>();
         result.put("count",count);
         result.put("list",data);
+        result.put("pageSize",count/pageCount+(count%pageCount>0?1:0));
         dataResult.setResult(result);
         return JSON.toJSONString(dataResult, SerializerFeature.WriteDateUseDateFormat);
+    }
+
+    @RequestMapping("/suggestion")
+    @ResponseBody
+    public String suggestion(HttpServletRequest request) {
+        DataResult dataResult = new DataResult(200);
+        String uid_ = request.getParameter("uid");
+        String content = request.getParameter("content");
+        userDAO.insertSuggestion(uid_!=null?Long.parseLong(uid_):null,content);
+        return JSON.toJSONString(dataResult);
     }
 }

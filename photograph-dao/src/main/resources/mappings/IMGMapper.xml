@@ -5,7 +5,7 @@
         select * from tb_img where compress_src is not null order by rand() limit #{limit}
     </select>
     <insert id="insertError">
-        insert IGNORE into tb_error(image_id,flag,created_at) values(#{imageId},1,now())
+        insert IGNORE into tb_error(image_id,err_msg,flag,created_at) values(#{imageId},#{errMsg},1,now())
     </insert>
     <select id="selectOwnCount" resultType="java.lang.Long">
         select count(*) from tb_user_favo a,tb_img b

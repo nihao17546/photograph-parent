@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface IMGDAO {
     List<IMGPO> selectRandom(@Param("limit") Integer limit);
-    int insertError(@Param("imageId") Long imageId);
+    int insertError(@Param("imageId") Long imageId,@Param("errMsg") String errMsg);
     List<IMGPO> selectOwnFavo(@Param("uid") Long uid,RowBounds rowBounds);
     long selectOwnCount(@Param("uid") Long uid);
 }
