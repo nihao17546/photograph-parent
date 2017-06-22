@@ -3,6 +3,7 @@ package com.nihaov.photograph.web.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.base.Strings;
+import com.nihaov.photograph.dao.IVisitDAO;
 import com.nihaov.photograph.pojo.constant.BaseConstant;
 import com.nihaov.photograph.pojo.result.SearchResult;
 import com.nihaov.photograph.pojo.vo.ImageVO;
@@ -31,9 +32,14 @@ public class BaseController {
     private IBaseService baseService;
     @Resource
     private ISearchService searchService;
+    @Resource
+    private IVisitDAO visitDAO;
 
     @RequestMapping("/")
-    public String index(Model model){
+    public String index(Model model,HttpServletRequest request){
+        String ip = getIpAddr(request);
+        String userAgent = request.getHeader("user-agent");
+        visitDAO.insert(ip,userAgent);
         model.addAttribute("compressPicPrefix",BaseConstant.compressPicPrefix);
         model.addAttribute("picPrefix",BaseConstant.picPrefix);
         return "index";
@@ -65,5 +71,34 @@ public class BaseController {
                              @PathVariable("keyword") String keyword){
         SearchResult searchResult = searchService.search(keyword,page,rows);
         return JSON.toJSONString(searchResult,SerializerFeature.WriteDateUseDateFormat);
+    }
+
+    private String getIpAddr(HttpServletRequest request) {
+        String ip = request.getHeader("Cdn-Src-Ip");
+        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-Forwarded-For");
+        }
+
+        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+
+        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+
+        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+
+        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+
+        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+
+        return ip;
     }
 }
