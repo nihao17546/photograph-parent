@@ -36,7 +36,10 @@ $(function () {
                 for(var i=0;i<data.length;i++){
                     appenPic(data[i]);
                 }
-                $('.slide-img').simpleSlide();
+                // layer.photos({
+                //     photos: '#put',
+                //     shift: 5
+                // });
                 $('#load-div').hide();
             },
             error:function () {
@@ -44,11 +47,39 @@ $(function () {
             }
         })
     });
-    $('#find').trigger("click");
+    // $('#find').trigger("click");
     window.onresize=function () {
+        $('#show-img-dd').width($(window).width())
+        $('#show-img-dd').height($(window).height()*0.65)
+        if($('#show-img')){
+            var ddW = $('#show-img-dd').width(),ddH = $('#show-img-dd').height();
+            var imgW = $('#show-img').width(),imgH = $('#show-img').height();
+            var imgHW = (imgW/imgH).toFixed(5);
+            var ddHW = (ddW/ddH).toFixed(5);
+            if(imgHW>ddHW){
+                $('#show-img').removeAttr('height');
+                if(imgW > ddW){
+                    $('#show-img').prop('width',ddW);
+                }
+                else{
+                    $('#show-img').removeAttr('width');
+                }
+            }
+            else{
+                $('#show-img').removeAttr('width');
+                if(imgH > ddH){
+                    $('#show-img').prop('height',ddH);
+                }
+                else{
+                    $('#show-img').removeAttr('height');
+                }
+            }
+        }
+
         $('#load-div').height($(window).height());
         w = $('body').width();
         h = $('body').height();
+        $('#show-img-div').height(h);
         if(w<768){
             $('#form2').hide();
             $('#form1').show();
@@ -82,10 +113,10 @@ function appenPic(obj) {
         '<div class="bar"> ' +
         '<div class="img-title">'+obj.title+'</div> ' +
         '</div> ' +
-        '<img class="slide-img" alt="加载中..." position="'+picArray.length+'" i="'+obj.src+'" onclick="imgclick(this)" src="'+obj.compressSrc+'" onload="imgload(this)" onerror="imgerror(this)"> ' +
+        '<img class="slide-img" alt="'+obj.title+'" position="'+picArray.length+'" onclick="imgclick(this)" src="'+obj.compressSrc+'" onload="imgload(this)" onerror="imgerror(this)"> ' +
         '</div> ';
-    var w=obj.width,h=obj.height;
-    var to=h/w;
+    var wi=obj.width,he=obj.height;
+    var to=he/wi;
     var appDiv=put1;
     if(h2<h1){
         if(h3<h2){
@@ -129,7 +160,14 @@ function appenPic(obj) {
         }
     }
     $(appDiv).append(app);
-    picArray.push(obj.path);
+    picArray.push({
+        id: obj.id,
+        title: obj.title,
+        src: obj.src,
+        date: obj.date,
+        width: obj.width,
+        height: obj.height
+    });
 }
 function reloadCache() {
     $('.put-div').html('');
@@ -145,13 +183,52 @@ function mleave(o) {
     $(o).find('.bar').hide();
 }
 function imgerror(o) {
-    $(o).attr("src", "http://fdfs.nihaov.com/404.jpg");
+    $(o).prop("src", "http://fdfs.nihaov.com/404.jpg");
 }
 function imgload(o) {
-
+    h = $('body').height();
+    $('#show-img-div').height(h);
 }
 function imgclick(o) {
-    var currentPath=picArray[$(o).attr('position')];
+    $('body').css({
+        "overflow-x":"hidden",
+        "overflow-y":"hidden"
+    });
+    var image = picArray[$(o).attr('position')];
+    $('#show-img-dd').width($(window).width())
+    $('#show-img-dd').height($(window).height()*0.65)
+
+    var img = new Image();
+    img.src = image.src;
+    img.id = 'show-img';
+    var ddW = $('#show-img-dd').width(),ddH = $('#show-img-dd').height();
+    var ddHW = (ddW/ddH).toFixed(5);
+    var imgHW = (image.width/image.height).toFixed(5);
+    if(imgHW>ddHW){
+        if(image.width > ddW){
+            img.width = ddW;
+        }
+    }
+    else{
+        if(image.height > ddH){
+            img.height = ddH;
+        }
+    }
+    img.onerror = function (e) {
+        imgerror(img)
+        $(img).removeAttr('width')
+        img.height = ddH;
+    }
+    $(img).hide()
+    img.onload = function (e) {
+        $(img).show()
+    }
+    $('#show-img-dd').append(img);
+    $(img).click(function () {
+        return false;
+    })
+    $('#show-tip').html(image.title).show()
+    $('#show-img-div').show();
 }
 function submi(o) {
     $('.notfound').remove();
@@ -209,7 +286,10 @@ function search() {
                         for(var i=0;i<len;i++){
                             appenPic(list[i]);
                         }
-                        $('.slide-img').simpleSlide();
+                        // layer.photos({
+                        //     photos: '#put',
+                        //     shift: 5
+                        // });
                     }
                     else if(recordCount==0){
                         $('#row-div').append('<div class="notfound" style="text-align: center;color: lavender;">很抱歉，您搜索的内容不存在~</div>');
@@ -241,3 +321,13 @@ var goToWhere = function (where){
             clearInterval (me.interval);}
         window.scrollBy (0, speed);me.site.unshift (speed);}, me.sleep);
 };
+
+function closeShowImg() {
+    $('#show-tip').html('').hide()
+    $('#show-img').remove();
+    $('#show-img-div').hide();
+    $('body').css({
+        "overflow-x":"auto",
+        "overflow-y":"auto"
+    });
+}

@@ -68,6 +68,15 @@ body{
     width: 100%;
     display: none;
 }
+#show-img-div{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 9998;
+    width: 100%;
+    background-color: black;
+    display: none;
+}
 .help{
     position: fixed;
     margin:auto;
@@ -75,4 +84,28 @@ body{
     right:0;
     top:0;
     bottom:0;
+}
+#show-img{
+}
+#show-img-dd{
+    position: fixed;
+    margin:auto;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    text-align: center;
+    background-image: url("/static/img/loading-1.gif");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#show-tip{
+    color: white;
+    font-size: 20px;
+    position: fixed;
+    bottom: 5px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
+    z-index: 9998;
 }

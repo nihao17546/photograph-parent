@@ -35,14 +35,15 @@ public class BaseController {
     @Resource
     private IVisitDAO visitDAO;
 
-    @RequestMapping("/")
+    @RequestMapping("/s")
     public String index(Model model,HttpServletRequest request){
         String ip = getIpAddr(request);
         String userAgent = request.getHeader("user-agent");
-        visitDAO.insert(ip,userAgent);
+        String host = request.getServerName();
+        visitDAO.insert(ip,userAgent,host);
         model.addAttribute("compressPicPrefix",BaseConstant.compressPicPrefix);
         model.addAttribute("picPrefix",BaseConstant.picPrefix);
-        return "index";
+        return "s";
     }
     @RequestMapping("/find")
     @ResponseBody

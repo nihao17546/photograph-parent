@@ -1,5 +1,6 @@
 package com.test;
 
+import com.nihaov.photograph.common.utils.DesUtil;
 import org.junit.Test;
 
 import java.util.concurrent.Callable;
@@ -30,6 +31,18 @@ public class SimpleTest {
             System.out.println(name+":-------------");
             return name.hashCode();
         }
+    }
+
+    @Test
+    public void tt(){
+        float a = (float) 10/3;
+        System.out.println(a);
+    }
+    @Test
+    public void tt通体() throws Exception {
+        String s = DesUtil.encrypt("http:www.nihaov.com","key");
+        System.out.println(s);
+        //86aa1f568379ae4bdb40669acbdfbd876177a15ccffef7f2
     }
 
 }

@@ -3,10 +3,12 @@ package com.nihaov.photograph.web.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.base.Strings;
+import com.nihaov.photograph.common.utils.DesEncrypt;
 import com.nihaov.photograph.dao.IMGDAO;
 import com.nihaov.photograph.pojo.po.IMGPO;
 import com.nihaov.photograph.pojo.result.SearchResult;
 import com.nihaov.photograph.pojo.vo.DataResult;
+import com.nihaov.photograph.pojo.vo.IMGVO;
 import com.nihaov.photograph.service.ISolrQueryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,60 @@ public class ImgController {
     @Resource
     private ISolrQueryService solrQueryService;
 
+    private DesEncrypt desEncrypt = new DesEncrypt();
+
+    /**
+     * 网站用
+     * @param request
+     * @return
+     */
+    @RequestMapping("/img/rand")
+    @ResponseBody
+    public String rand(HttpServletRequest request){
+        Integer limit = 60;
+        String limit_ = request.getParameter("limit");
+        if(!Strings.isNullOrEmpty(limit_))
+            limit = Integer.parseInt(limit_);
+        List<IMGPO> list = imgdao.selectRandom(limit);
+        for(IMGPO imgpo:list){
+            //对src加密
+            imgpo.setSrc(desEncrypt.encrypt(imgpo.getSrc()));
+        }
+        return JSON.toJSONString(list, SerializerFeature.WriteDateUseDateFormat);
+    }
+
+    /**
+     * 网站用
+     * @param page
+     * @param rows
+     * @param keyword
+     * @param request
+     * @return
+     */
+    @RequestMapping("/img/que/{page}/{rows}/{keyword}")
+    @ResponseBody
+    public String que(@PathVariable("page") Integer page,
+                             @PathVariable("rows") Integer rows,
+                             @PathVariable("keyword") String keyword,
+                             HttpServletRequest request){
+        String sort = request.getParameter("sort");
+        String asc = request.getParameter("asc");
+        SearchResult searchResult = solrQueryService.query(keyword,page,rows,sort,asc);
+        if(searchResult.getData()!=null){
+            for(Object obj:searchResult.getData()){
+                IMGVO imgvo = (IMGVO) obj;
+                //对src加密
+                imgvo.setSrc(desEncrypt.encrypt(imgvo.getSrc()));
+            }
+        }
+        return JSON.toJSONString(searchResult,SerializerFeature.WriteDateUseDateFormat);
+    }
+
+    /**
+     * 微信用
+     * @param request
+     * @return
+     */
     @RequestMapping("/random")
     @ResponseBody
     public String random(HttpServletRequest request){
@@ -37,6 +93,11 @@ public class ImgController {
         List<IMGPO> list = imgdao.selectRandom(limit);
         return JSON.toJSONString(list, SerializerFeature.WriteDateUseDateFormat);
     }
+    /**
+     * 微信用
+     * @param request
+     * @return
+     */
     @RequestMapping("/query/{page}/{rows}/{keyword}")
     @ResponseBody
     public String queryImage(@PathVariable("page") Integer page,

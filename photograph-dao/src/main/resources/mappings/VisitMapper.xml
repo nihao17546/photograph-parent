@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nihaov.photograph.dao.IVisitDAO">
     <insert id="insert">
-        insert into tb_visit(ip,user_agent,created_at)
-        values(#{ip},#{userAgent},now())
+        insert into tb_visit(ip,user_agent,host,created_at)
+        values(#{ip},#{userAgent},#{host},now())
     </insert>
 </mapper>
