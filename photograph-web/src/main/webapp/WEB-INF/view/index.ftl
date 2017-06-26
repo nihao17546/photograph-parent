@@ -43,7 +43,7 @@
                 <form id="search_from" class="search_form" onsubmit="return submi()">
                     <div class="form-group">
                         <div class="input-group">
-                            <input id="search_input" name="key" type="text" class="form-control search_input" placeholder="搜索发现更多...">
+                            <input id="search_input" maxlength="8" name="key" type="text" class="form-control search_input" placeholder="搜索发现更多...">
                             <a href="javascript:void(0)" onclick="submi()" class="btn input-group-addon search_a">
                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                             </a>
@@ -51,9 +51,10 @@
                     </div>
                     <div class="hot_div">热门搜索:
                         <a href="javascript:void(0)" onclick="hotSearch(this)">漫画</a>
-                        <a href="javascript:void(0)" onclick="hotSearch(this)">王者荣耀</a>
+                        <a href="javascript:void(0)" onclick="hotSearch(this)">摄影</a>
                         <a href="javascript:void(0)" onclick="hotSearch(this)">1080</a>
                         <a href="javascript:void(0)" onclick="hotSearch(this)">文字</a>
+                        <a href="javascript:void(0)" onclick="hotSearch(this)">untitled</a>
                     </div>
                 </form>
             </div>
@@ -147,7 +148,7 @@
 <script src="/static/libs/jquery.min.js"></script>
 <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="/static/libs/layer/layer.js"></script>
-<script src="/static/js/new.js?v=7"></script>
+<script src="/static/js/new.js?v=8"></script>
 <script src="/static/js/tripledes.js"></script>
 <script src="/static/js/mode-ecb.js"></script>
 <script src="/static/js/md5.js"></script>

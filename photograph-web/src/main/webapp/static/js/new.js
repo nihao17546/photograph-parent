@@ -267,6 +267,12 @@ function search() {
                 else if(recordCount==0){
                     layer.msg('很抱歉，您搜索的内容不存在~');
                 }
+                if($('#recordCount').length < 1){
+                    $(page).append('&nbsp;<span id="recordCount" style="font-size: 13px;float: right;">结果'+recordCount+'张</span>')
+                }
+                else{
+                    $('#recordCount').html('结果'+recordCount+'张')
+                }
                 $('#load-div').hide();
             },
             error:function () {
