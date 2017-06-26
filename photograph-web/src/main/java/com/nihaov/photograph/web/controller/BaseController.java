@@ -40,7 +40,7 @@ public class BaseController {
         String ip = getIpAddr(request);
         String userAgent = request.getHeader("user-agent");
         String host = request.getServerName();
-        visitDAO.insert(ip,userAgent,host);
+//        visitDAO.insert(ip,userAgent,host);
         model.addAttribute("compressPicPrefix",BaseConstant.compressPicPrefix);
         model.addAttribute("picPrefix",BaseConstant.picPrefix);
         return "s";

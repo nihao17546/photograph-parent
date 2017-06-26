@@ -50,9 +50,9 @@
                         </div>
                     </div>
                     <div class="hot_div">热门搜索:
-                        <a href="javascript:void(0)" onclick="hotSearch(this)">卡通</a>
-                        <a href="javascript:void(0)" onclick="hotSearch(this)">云</a>
-                        <a href="javascript:void(0)" onclick="hotSearch(this)">旅游</a>
+                        <a href="javascript:void(0)" onclick="hotSearch(this)">漫画</a>
+                        <a href="javascript:void(0)" onclick="hotSearch(this)">王者荣耀</a>
+                        <a href="javascript:void(0)" onclick="hotSearch(this)">1080</a>
                         <a href="javascript:void(0)" onclick="hotSearch(this)">文字</a>
                     </div>
                 </form>
@@ -61,9 +61,9 @@
     </div>
     <div class="order">
         <span class="line"></span>
-        <span style="white-space:pre">	</span>
+        <span style="white-space:pre"></span>
         <span id="page_span" page="find" class="txt">发现</span>
-        <span style="white-space:pre">	</span>
+        <span style="white-space:pre"></span>
         <span class="line"></span>
     </div>
     <div class="row pic_div">
@@ -147,7 +147,7 @@
 <script src="/static/libs/jquery.min.js"></script>
 <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="/static/libs/layer/layer.js"></script>
-<script src="/static/js/new.js?v=6"></script>
+<script src="/static/js/new.js?v=7"></script>
 <script src="/static/js/tripledes.js"></script>
 <script src="/static/js/mode-ecb.js"></script>
 <script src="/static/js/md5.js"></script>

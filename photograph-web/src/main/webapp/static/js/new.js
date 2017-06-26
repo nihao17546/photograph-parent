@@ -284,7 +284,7 @@ function exchange(type) {
         goToWhere(0);
     }
     else if(type=='search'){
-        $(page).html('搜 索&nbsp;&nbsp;<a id="sort_type" href="javascript:void(0)" style="color: orangered;" t="1" onclick="searchSort(this)">默认排序</a>').attr('page','search');
+        $(page).html('搜 索: '+searchKey+'&nbsp;&nbsp;<a id="sort_type" href="javascript:void(0)" style="color: orangered;" t="2" onclick="searchSort(this)">收录时间⇩</a>').attr('page','search');
         $('#bottom_btn').html('加载更多');
     }
 }

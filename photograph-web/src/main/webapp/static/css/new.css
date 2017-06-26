@@ -132,14 +132,14 @@ a:active{
 .order {
     height: 35px;
     line-height: 35px;
-    text-align: center;
+    text-align: left;
     position: relative;
     top: -90px;
     color: gray;
 }
 .order .line {
     display: inline-block;
-    width: 30%;
+    /*width: 30%;*/
     border-top: 1px solid #ccc ;
 }
 .order .txt {
