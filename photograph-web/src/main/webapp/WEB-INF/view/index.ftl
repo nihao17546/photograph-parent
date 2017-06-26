@@ -10,7 +10,7 @@
     <meta name="referrer" content="never">
     <link rel="shortcut icon" href="http://static.nihaov.com/static/img/favicon.ico">
     <link href="/static/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/new.css?v=1" rel="stylesheet">
+    <link href="/static/css/new.css?v=2" rel="stylesheet">
 
     <style>
 
@@ -147,7 +147,7 @@
 <script src="/static/libs/jquery.min.js"></script>
 <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="/static/libs/layer/layer.js"></script>
-<script src="/static/js/new.js?v=5"></script>
+<script src="/static/js/new.js?v=6"></script>
 <script src="/static/js/tripledes.js"></script>
 <script src="/static/js/mode-ecb.js"></script>
 <script src="/static/js/md5.js"></script>

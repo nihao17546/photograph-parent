@@ -67,7 +67,8 @@ public class ImgController {
                              HttpServletRequest request){
         String sort = request.getParameter("sort");
         String asc = request.getParameter("asc");
-        SearchResult searchResult = solrQueryService.query(keyword,page,rows,sort,asc);
+        String key = request.getParameter("k");
+        SearchResult searchResult = solrQueryService.query(key,page,rows,sort,asc);
         if(searchResult.getData()!=null){
             for(Object obj:searchResult.getData()){
                 IMGVO imgvo = (IMGVO) obj;

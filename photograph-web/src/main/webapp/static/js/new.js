@@ -8,8 +8,8 @@ function imgerror(o) {
     $(o).prop("src", "http://fdfs.nihaov.com/404.jpg");
 }
 function imgload(o) {
-    h = $('body').height();
-    $('#show-img-div').height(h);
+    // h = $('body').height();
+    // $('#show-img-div').height(h);
 }
 function mover(o) {
     $(o).find('.bar').show();
@@ -104,7 +104,6 @@ function random() {
         })
     }
     else if(type=='search'){
-        exchange('search')
         if(searchKey!=''){
             if(nextPage!=-1){
                 search();
@@ -173,6 +172,7 @@ function appenPic(obj) {
     $(appDiv).append(app);
 }
 $(function () {
+    $('#show-img-div').height($(window).height());
     window.onresize = function () {
         $('#show-img-dd').width($(window).width())
         $('#show-img-dd').height($(window).height()*0.65)
@@ -203,7 +203,7 @@ $(function () {
         $('#load-div').height($(window).height());
         w = $('body').width();
         h = $('body').height();
-        $('#show-img-div').height(h);
+        $('#show-img-div').height($(window).height());
     }
 })
 function submi() {
@@ -213,6 +213,7 @@ function submi() {
     nextPage=1;pageSize=30;curPage=0;pageCount=0;recordCount=0;
     if(searchKey!=''){
         reloadCache();
+        exchange('search')
         search();
     }
     return false;
@@ -220,11 +221,32 @@ function submi() {
 function search() {
     if(nextPage!=-1){
         $('#load-div').show();
-        exchange('search');
+        var param = {
+            k:searchKey
+        };
+        var sort_type = $('#sort_type');
+        if(sort_type){
+            var t = $(sort_type).attr('t');
+            if(t==2){
+                param = {
+                    sort:'image_date',
+                    asc:'desc',
+                    k:searchKey
+                }
+            }
+            else if(t==3){
+                param = {
+                    sort:'image_date',
+                    asc:'asc',
+                    k:searchKey
+                }
+            }
+        }
         $.ajax({
             type:'post',
             url:'/img/que/'+nextPage+'/'+pageSize+'/'+searchKey,
             dataType: "json",
+            data: param,
             success: function (data) {
                 var list = data.data;
                 var len = list.length;
@@ -262,8 +284,31 @@ function exchange(type) {
         goToWhere(0);
     }
     else if(type=='search'){
-        $(page).html('搜 索').attr('page','search');
+        $(page).html('搜 索&nbsp;&nbsp;<a id="sort_type" href="javascript:void(0)" style="color: orangered;" t="1" onclick="searchSort(this)">默认排序</a>').attr('page','search');
         $('#bottom_btn').html('加载更多');
+    }
+}
+function searchSort(o) {
+    layer.open({
+        type: 1,
+        title: '选择排序方式',
+        skin: 'layui-layer-demo', //样式类名
+        anim: 2,
+        shadeClose: true, //开启遮罩关闭
+        content: '<div style="padding: 15px;">' +
+        '<button onclick="sortBtn(this)" t="1" class="btn btn-primary btn-sm">默认排序</button><br>' +
+        '<button onclick="sortBtn(this)" t="2" style="margin-top: 5px;" class="btn btn-primary btn-sm">收录时间⇩</button>' +
+        '<button onclick="sortBtn(this)" t="3" style="margin-top: 5px;" class="btn btn-primary btn-sm">收录时间⇧</button><br>' +
+        '</div>'
+    });
+}
+function sortBtn(o) {
+    $('#sort_type').attr('t',$(o).attr('t')).html($(o).html());
+    $('.layui-layer-close').click();
+    nextPage=1;pageSize=30;curPage=0;pageCount=0;recordCount=0;
+    if(searchKey!=''){
+        reloadCache();
+        search();
     }
 }
 function closeShowImg() {
