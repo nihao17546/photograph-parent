@@ -106,7 +106,7 @@ function random() {
     else if(type=='search'){
         if(searchKey!=''){
             if(nextPage!=-1){
-                search();
+                search(false);
             }
             else{
                 layer.msg('没有更多了')
@@ -214,11 +214,11 @@ function submi() {
     if(searchKey!=''){
         reloadCache();
         exchange('search')
-        search();
+        search(true);
     }
     return false;
 }
-function search() {
+function search(record) {
     if(nextPage!=-1){
         $('#load-div').show();
         var param = {
@@ -242,6 +242,7 @@ function search() {
                 }
             }
         }
+        param.record = record
         $.ajax({
             type:'post',
             url:'/img/que/'+nextPage+'/'+pageSize+'/'+searchKey,
@@ -283,11 +284,11 @@ function search() {
 }
 function exchange(type) {
     if(type=='find'){
+        goToWhere(0);
         nextPage=1;pageSize=30;curPage=0;pageCount=0;recordCount=0;searchKey='';
         $(page).attr('page','find').html('发 现');
         $('#bottom_btn').html('换一批');
         $('#search_input').val('');
-        goToWhere(0);
     }
     else if(type=='search'){
         $(page).html('搜 索: '+searchKey+'&nbsp;&nbsp;<a id="sort_type" href="javascript:void(0)" style="color: orangered;" t="2" onclick="searchSort(this)">收录时间⇩</a>').attr('page','search');
@@ -314,7 +315,7 @@ function sortBtn(o) {
     nextPage=1;pageSize=30;curPage=0;pageCount=0;recordCount=0;
     if(searchKey!=''){
         reloadCache();
-        search();
+        search(false);
     }
 }
 function closeShowImg() {
@@ -355,7 +356,15 @@ function regist() {
 function hotSearch(o) {
     var hotKey = $(o).html();
     $('#search_input').val(hotKey);
-    submi();
+    // submi();
+    $('#search_input').blur();
+    searchKey = hotKey;
+    nextPage=1;pageSize=30;curPage=0;pageCount=0;recordCount=0;
+    if(searchKey!=''){
+        reloadCache();
+        exchange('search')
+        search(false);
+    }
 }
 function newst() {
     layer.open({

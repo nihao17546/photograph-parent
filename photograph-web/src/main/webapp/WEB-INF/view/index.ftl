@@ -50,11 +50,11 @@
                         </div>
                     </div>
                     <div class="hot_div">热门搜索:
-                        <a href="javascript:void(0)" onclick="hotSearch(this)">漫画</a>
-                        <a href="javascript:void(0)" onclick="hotSearch(this)">摄影</a>
-                        <a href="javascript:void(0)" onclick="hotSearch(this)">1080</a>
-                        <a href="javascript:void(0)" onclick="hotSearch(this)">文字</a>
-                        <a href="javascript:void(0)" onclick="hotSearch(this)">untitled</a>
+                        <#if hot??>
+                            <#list hot as k>
+                                <a href="javascript:void(0)" onclick="hotSearch(this)">${k}</a>
+                            </#list>
+                        </#if>
                     </div>
                 </form>
             </div>

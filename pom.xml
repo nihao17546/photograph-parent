@@ -41,8 +41,8 @@
         <solrj.version>4.10.3</solrj.version>
         <freemarker.version>2.3.23</freemarker.version>
         <guava.version>19.0</guava.version>
-        <spring.redis.version>1.0.2.RELEASE</spring.redis.version>
-        <jedis.version>2.1.0</jedis.version>
+        <spring.redis.version>1.6.2.RELEASE</spring.redis.version>
+        <jedis.version>2.4.2</jedis.version>
     </properties>
 
     <dependencyManagement>

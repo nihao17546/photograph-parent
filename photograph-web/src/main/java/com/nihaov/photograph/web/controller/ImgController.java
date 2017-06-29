@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.base.Strings;
 import com.nihaov.photograph.common.utils.DesEncrypt;
+import com.nihaov.photograph.common.utils.RedisUtil;
+import com.nihaov.photograph.common.utils.SimpleDateUtil;
 import com.nihaov.photograph.dao.IMGDAO;
+import com.nihaov.photograph.pojo.enums.RedisKeyEnum;
 import com.nihaov.photograph.pojo.po.IMGPO;
 import com.nihaov.photograph.pojo.result.SearchResult;
 import com.nihaov.photograph.pojo.vo.DataResult;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +32,8 @@ public class ImgController {
     private IMGDAO imgdao;
     @Resource
     private ISolrQueryService solrQueryService;
+    @Resource
+    private RedisUtil redisUtil;
 
     private DesEncrypt desEncrypt = new DesEncrypt();
 
@@ -76,6 +82,10 @@ public class ImgController {
                 imgvo.setSrc(desEncrypt.encrypt(imgvo.getSrc()));
             }
         }
+        String record_ = request.getParameter("record");
+        if("true".equals(record_)){
+            redisUtil.incr(SimpleDateUtil.shortFormat(new Date())+RedisKeyEnum.网站搜索关键字前缀.getValue()+key);
+        }
         return JSON.toJSONString(searchResult,SerializerFeature.WriteDateUseDateFormat);
     }
 
@@ -108,6 +118,9 @@ public class ImgController {
         String sort = request.getParameter("sort");
         String asc = request.getParameter("asc");
         SearchResult searchResult = solrQueryService.query(keyword,page,rows,sort,asc);
+        if(page == 1){
+            redisUtil.incr(SimpleDateUtil.shortFormat(new Date())+RedisKeyEnum.微信小程序搜索关键字前缀.getValue()+keyword);
+        }
         return JSON.toJSONString(searchResult,SerializerFeature.WriteDateUseDateFormat);
     }
     @RequestMapping("/error")

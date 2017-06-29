@@ -25,81 +25,81 @@ import java.util.Map;
 /**
  * Created by nihao on 17/4/22.
  */
-@Controller
+//@Controller
 public class BaseController {
-
-    @Resource
-    private IBaseService baseService;
-    @Resource
-    private ISearchService searchService;
-    @Resource
-    private IVisitDAO visitDAO;
-
-    @RequestMapping("/s")
-    public String index(Model model,HttpServletRequest request){
-        String ip = getIpAddr(request);
-        String userAgent = request.getHeader("user-agent");
-        String host = request.getServerName();
-//        visitDAO.insert(ip,userAgent,host);
-        model.addAttribute("compressPicPrefix",BaseConstant.compressPicPrefix);
-        model.addAttribute("picPrefix",BaseConstant.picPrefix);
-        return "s";
-    }
-    @RequestMapping("/find")
-    @ResponseBody
-    public String findAjax(HttpServletRequest request){
-        String size_ = request.getParameter("size");
-        Integer size = 60;
-        if(!Strings.isNullOrEmpty(size_)){
-            size = Integer.parseInt(size_);
-        }
-        List<ImageVO> list = baseService.getList(size);
-        return JSON.toJSONString(list, SerializerFeature.WriteDateUseDateFormat);
-    }
-
-    @RequestMapping("/query/image/tag/{page}/{rows}/{keyword}/{param}")
-    @ResponseBody
-    public String queryImageByTag(@PathVariable("page") Integer page,
-                                  @PathVariable("rows") Integer rows,
-                                  @PathVariable("keyword") String keyword){
-        SearchResult searchResult = searchService.search("image_tag",keyword,page,rows);
-        return JSON.toJSONString(searchResult,SerializerFeature.WriteDateUseDateFormat);
-    }
-    @RequestMapping("/query/image/{page}/{rows}/{keyword}")
-    @ResponseBody
-    public String queryImage(@PathVariable("page") Integer page,
-                             @PathVariable("rows") Integer rows,
-                             @PathVariable("keyword") String keyword){
-        SearchResult searchResult = searchService.search(keyword,page,rows);
-        return JSON.toJSONString(searchResult,SerializerFeature.WriteDateUseDateFormat);
-    }
-
-    private String getIpAddr(HttpServletRequest request) {
-        String ip = request.getHeader("Cdn-Src-Ip");
-        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("X-Forwarded-For");
-        }
-
-        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-
-        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-
-        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-        }
-
-        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-
-        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-
-        return ip;
-    }
+//
+//    @Resource
+//    private IBaseService baseService;
+//    @Resource
+//    private ISearchService searchService;
+//    @Resource
+//    private IVisitDAO visitDAO;
+//
+//    @RequestMapping("/s")
+//    public String index(Model model,HttpServletRequest request){
+//        String ip = getIpAddr(request);
+//        String userAgent = request.getHeader("user-agent");
+//        String host = request.getServerName();
+////        visitDAO.insert(ip,userAgent,host);
+//        model.addAttribute("compressPicPrefix",BaseConstant.compressPicPrefix);
+//        model.addAttribute("picPrefix",BaseConstant.picPrefix);
+//        return "s";
+//    }
+//    @RequestMapping("/find")
+//    @ResponseBody
+//    public String findAjax(HttpServletRequest request){
+//        String size_ = request.getParameter("size");
+//        Integer size = 60;
+//        if(!Strings.isNullOrEmpty(size_)){
+//            size = Integer.parseInt(size_);
+//        }
+//        List<ImageVO> list = baseService.getList(size);
+//        return JSON.toJSONString(list, SerializerFeature.WriteDateUseDateFormat);
+//    }
+//
+//    @RequestMapping("/query/image/tag/{page}/{rows}/{keyword}/{param}")
+//    @ResponseBody
+//    public String queryImageByTag(@PathVariable("page") Integer page,
+//                                  @PathVariable("rows") Integer rows,
+//                                  @PathVariable("keyword") String keyword){
+//        SearchResult searchResult = searchService.search("image_tag",keyword,page,rows);
+//        return JSON.toJSONString(searchResult,SerializerFeature.WriteDateUseDateFormat);
+//    }
+//    @RequestMapping("/query/image/{page}/{rows}/{keyword}")
+//    @ResponseBody
+//    public String queryImage(@PathVariable("page") Integer page,
+//                             @PathVariable("rows") Integer rows,
+//                             @PathVariable("keyword") String keyword){
+//        SearchResult searchResult = searchService.search(keyword,page,rows);
+//        return JSON.toJSONString(searchResult,SerializerFeature.WriteDateUseDateFormat);
+//    }
+//
+//    private String getIpAddr(HttpServletRequest request) {
+//        String ip = request.getHeader("Cdn-Src-Ip");
+//        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+//            ip = request.getHeader("X-Forwarded-For");
+//        }
+//
+//        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+//            ip = request.getHeader("Proxy-Client-IP");
+//        }
+//
+//        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+//            ip = request.getHeader("WL-Proxy-Client-IP");
+//        }
+//
+//        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+//            ip = request.getHeader("HTTP_CLIENT_IP");
+//        }
+//
+//        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+//            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+//        }
+//
+//        if (Strings.isNullOrEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+//            ip = request.getRemoteAddr();
+//        }
+//
+//        return ip;
+//    }
 }

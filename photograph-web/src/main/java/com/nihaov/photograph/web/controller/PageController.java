@@ -107,6 +107,7 @@ public class PageController {
         model.addAttribute("pic4",list4);
         model.addAttribute("md",new Random().nextInt(6));
         model.addAttribute("eckey",desEncrypt.getKeyStr());
+        model.addAttribute("hot",BaseConstant.hot);
         return "index";
     }
 

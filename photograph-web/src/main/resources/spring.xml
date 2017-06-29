@@ -103,4 +103,7 @@
         <property name="properties" ref="configProperties"/>
     </bean>
 
+    <import resource="classpath:application-redis.xml"/>
+    <import resource="classpath:spring-tasks.xml"/>
+
 </beans>

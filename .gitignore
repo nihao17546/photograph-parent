@@ -14,3 +14,4 @@ lib
 .DS_Store
 **/.cache-*
 jdbc.properties
+redis.properties

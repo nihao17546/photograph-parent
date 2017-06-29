@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * Created by nihao on 17/4/12.
  */
-@Controller
+//@Controller
 public class TestController {
     @Value("#{configProperties['picPrefix']}")
     private String picPrefix;
