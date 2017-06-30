@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
-    <title>收录优美图片_壁纸_热门_头像_高清</title>
+    <title>发现优美图片_壁纸_热门_头像_高清</title>
     <meta name="keywords" content="壁纸,图片,手机壁纸,美图,发现,美文,唯美">
     <meta name="description" content="发现优美图片,高清手机壁纸">
     <meta name="referrer" content="never">
@@ -148,7 +148,7 @@
 <script src="/static/libs/jquery.min.js"></script>
 <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="/static/libs/layer/layer.js"></script>
-<script src="/static/js/new.js?v=8"></script>
+<script src="/static/js/new.js?v=9"></script>
 <script src="/static/js/tripledes.js"></script>
 <script src="/static/js/mode-ecb.js"></script>
 <script src="/static/js/md5.js"></script>

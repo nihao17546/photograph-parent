@@ -111,6 +111,9 @@ public class UserController {
                 userPO.setUnionId(openid);
                 userPO.setHeadPic(wxUserInfo.getAvatarUrl());
                 userPO.setGender(wxUserInfo.getGender());
+                userPO.setCountry(wxUserInfo.getCountry());
+                userPO.setCity(wxUserInfo.getCity());
+                userPO.setProvince(wxUserInfo.getProvince());
                 UserPO rePO = userService.auth(userPO);
                 dataResult.setCode(200);
                 dataResult.setResult(rePO);

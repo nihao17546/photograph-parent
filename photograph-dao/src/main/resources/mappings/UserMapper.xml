@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nihaov.photograph.dao.IUserDAO">
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.nihaov.photograph.pojo.po.UserPO">
-        insert into tb_user(user_id,password,nickname,gender,head_pic,email,union_id,created_at)
-        values(#{userId},#{password},#{nickname},#{gender},#{headPic},#{email},#{unionId},now())
+        insert into tb_user(user_id,password,nickname,gender,head_pic,email,union_id,country,city,province,created_at)
+        values(#{userId},#{password},#{nickname},#{gender},#{headPic},#{email},#{unionId},#{country},#{city},#{province},now())
     </insert>
     <select id="selectByUserId" resultType="com.nihaov.photograph.pojo.po.UserPO">
         select user_id,nickname,gender,head_pic,created_at from tb_user where user_id=#{userId}
