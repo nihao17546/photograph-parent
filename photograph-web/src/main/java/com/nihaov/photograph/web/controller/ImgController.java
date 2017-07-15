@@ -117,6 +117,10 @@ public class ImgController {
                              HttpServletRequest request){
         String sort = request.getParameter("sort");
         String asc = request.getParameter("asc");
+        if(Strings.isNullOrEmpty(sort)){
+            sort = "image_date";
+            asc = "desc";
+        }
         SearchResult searchResult = solrQueryService.query(keyword,page,rows,sort,asc);
         if(page == 1){
             redisUtil.incr(SimpleDateUtil.shortFormat(new Date())+RedisKeyEnum.微信小程序搜索关键字前缀.getValue()+keyword);

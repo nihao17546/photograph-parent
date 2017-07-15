@@ -1,6 +1,5 @@
 package com.nihaov.photograph.web.controller;
 
-import com.nihaov.photograph.dao.IIMageDAO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +20,6 @@ public class TestController {
     private String picPrefix;
     @Value("#{configProperties['staticUrl']}")
     private String staticUrl;
-    @Resource
-    private IIMageDAO iMageDAO;
 
 
 

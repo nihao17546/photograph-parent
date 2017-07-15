@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nihaov.photograph.dao.IMGDAO">
     <select id="selectRandom" resultType="com.nihaov.photograph.pojo.po.IMGPO">
-        select * from tb_img where compress_src is not null order by rand() limit #{limit}
+        select * from tb_img where flag=1 order by rand() limit #{limit}
     </select>
     <insert id="insertError">
         insert IGNORE into tb_error(image_id,err_msg,flag,created_at) values(#{imageId},#{errMsg},1,now())

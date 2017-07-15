@@ -1,15 +1,11 @@
 package com.nihaov.photograph.web.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.base.Strings;
 import com.nihaov.photograph.common.utils.DesEncrypt;
 import com.nihaov.photograph.dao.IMGDAO;
 import com.nihaov.photograph.dao.IVisitDAO;
 import com.nihaov.photograph.pojo.constant.BaseConstant;
 import com.nihaov.photograph.pojo.po.IMGPO;
-import com.nihaov.photograph.pojo.vo.ImageVO;
-import com.nihaov.photograph.service.IBaseService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

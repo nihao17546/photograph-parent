@@ -11,25 +11,44 @@ import java.util.concurrent.FutureTask;
  * Created by nihao on 17/5/21.
  */
 public class SimpleTest {
+    private String a = "cweveverberbe";
 
     @Test
     public void test01() throws ExecutionException, InterruptedException {
-        FutureTask task = new FutureTask(new TThread("hello"));
-        new Thread(task).start();
-        System.out.println(task.get());
+        FutureTask task1 = new FutureTask(new TThread("111111",5000));
+        Thread t1 = new Thread(task1);
+//        t1.join();
+
+        FutureTask task2 = new FutureTask(new TThread("222222",0));
+        Thread t2 = new Thread(task2);
+//        t2.join();
+
+        t1.start();
+        t2.start();
+        System.out.println("task1:"+task1.isDone());
+        System.out.println("task2:"+task2.isDone());
+        System.out.println(task2.get());
+        System.out.println("task1:"+task1.isDone());
+        System.out.println("task2:"+task2.isDone());
+        System.out.println(task1.get());
+        System.out.println("task1:"+task1.isDone());
+        System.out.println("task2:"+task2.isDone());
     }
 
-    class TThread implements Callable<Integer>{
+    class TThread implements Callable<String>{
         private String name;
+        private long sle;
 
-        TThread(String name){
+        TThread(String name,long sle){
             this.name = name;
+            this.sle = sle;
         }
 
         @Override
-        public Integer call() throws Exception {
-            System.out.println(name+":-------------");
-            return name.hashCode();
+        public String call() throws Exception {
+            System.out.println(name+": 正在执行");
+            Thread.sleep(sle);
+            return "结果:"+name;
         }
     }
 

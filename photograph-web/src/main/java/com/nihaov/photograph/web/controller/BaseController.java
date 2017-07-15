@@ -7,7 +7,6 @@ import com.nihaov.photograph.dao.IVisitDAO;
 import com.nihaov.photograph.pojo.constant.BaseConstant;
 import com.nihaov.photograph.pojo.result.SearchResult;
 import com.nihaov.photograph.pojo.vo.ImageVO;
-import com.nihaov.photograph.service.IBaseService;
 import com.nihaov.photograph.service.ISearchService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
