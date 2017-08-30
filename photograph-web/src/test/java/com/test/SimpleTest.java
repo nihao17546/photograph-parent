@@ -1,8 +1,15 @@
 package com.test;
 
+import com.nihaov.photograph.common.utils.AnimatedGifEncoder;
 import com.nihaov.photograph.common.utils.DesUtil;
+import com.nihaov.photograph.common.utils.FontText;
+import com.nihaov.photograph.common.utils.ImageUtils;
 import org.junit.Test;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -12,6 +19,18 @@ import java.util.concurrent.FutureTask;
  */
 public class SimpleTest {
     private String a = "cweveverberbe";
+
+    @Test
+    public void test09() throws Exception {
+        AnimatedGifEncoder e = new AnimatedGifEncoder();
+        BufferedImage src1 = ImageIO.read(new File("/Users/nihao/Downloads/tou.png"));
+        BufferedImage src2 = ImageIO.read(new File("/Users/nihao/Downloads/0.jpg"));
+        e.start("/Users/nihao/Downloads/jjjjjj.gif");
+        e.setDelay(100);
+        e.addFrame(src1);
+        e.addFrame(src2);
+        e.finish();
+    }
 
     @Test
     public void test01() throws ExecutionException, InterruptedException {
@@ -62,6 +81,12 @@ public class SimpleTest {
         String s = DesUtil.encrypt("http:www.nihaov.com","key");
         System.out.println(s);
         //86aa1f568379ae4bdb40669acbdfbd876177a15ccffef7f2
+    }
+    @Test
+    public void test(){
+        String filePath = "/Users/nihao/Downloads/11111.png";
+        String outPath = "/Users/nihao/Downloads/222.png";
+//        ImageUtils.drawTextInImg(filePath, outPath, new FontText("哈哈哈哈哈哈洒出 v 额外 v 额外 v 额外", 2, "#CC2BAC", 25, "Serif"));
     }
 
 }
