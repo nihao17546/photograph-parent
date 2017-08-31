@@ -1,15 +1,13 @@
 package com.test;
 
-import com.nihaov.photograph.common.utils.AnimatedGifEncoder;
-import com.nihaov.photograph.common.utils.DesUtil;
-import com.nihaov.photograph.common.utils.FontText;
-import com.nihaov.photograph.common.utils.ImageUtils;
+import com.nihaov.photograph.common.utils.*;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -87,6 +85,40 @@ public class SimpleTest {
         String filePath = "/Users/nihao/Downloads/11111.png";
         String outPath = "/Users/nihao/Downloads/222.png";
 //        ImageUtils.drawTextInImg(filePath, outPath, new FontText("哈哈哈哈哈哈洒出 v 额外 v 额外 v 额外", 2, "#CC2BAC", 25, "Serif"));
+    }
+    @Test
+    public void bubbleSortTest(){
+        int[] arr = new int[]{7,98,5,0,22,54,1};
+        sout(bubbleSort(arr));
+    }
+
+    public void sout(int[] arr){
+        for (int a : arr){
+            System.out.print(a + ",");
+        }
+    }
+
+    public int[] bubbleSort(int[] arr){
+        for(int i=0;i<arr.length-1;i++){
+            for(int j=0;j<arr.length-i-1;j++){
+                if(arr[j]>arr[j+1]){
+                    int temp = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j+1] = temp;
+                }
+            }
+        }
+        return arr;
+    }
+
+    @Test
+    public void dasda() throws UnsupportedEncodingException {
+        String s = "暖暖玥兒\uD83D\uDC93";
+        String s2 = "哈哈哈";
+        System.out.println(UTF8Utils.contains4BytesChar2(s));
+        System.out.println(UTF8Utils.contains4BytesChar2(s2));
+        System.out.println(new String(UTF8Utils.remove4BytesUTF8Char(s),"UTF-8"));
+        System.out.println(UTF8Utils.bytesToHex(s2.getBytes()));
     }
 
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.base.Strings;
 import com.nihaov.photograph.common.utils.DesUtil;
+import com.nihaov.photograph.common.utils.UTF8Utils;
 import com.nihaov.photograph.common.utils.WXUtil;
 import com.nihaov.photograph.dao.IUserDAO;
 import com.nihaov.photograph.pojo.po.IMGPO;
@@ -21,6 +22,8 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +42,8 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Resource
     private IUserService userService;
     @Resource
@@ -106,6 +111,11 @@ public class UserController {
             if(result.containsKey("openid")){
                 String openid = result.get("openid");
                 WxUserInfo wxUserInfo = JSON.parseObject(user,WxUserInfo.class);
+                if(wxUserInfo.getNickName() != null){
+                    if(UTF8Utils.contains4BytesChar2(wxUserInfo.getNickName())){
+                        wxUserInfo.setNickName(new String(UTF8Utils.remove4BytesUTF8Char(wxUserInfo.getNickName()),"UTF-8"));
+                    }
+                }
                 UserPO userPO = new UserPO();
                 userPO.setNickname(wxUserInfo.getNickName());
                 userPO.setUnionId(openid);
@@ -127,6 +137,7 @@ public class UserController {
         }catch (Exception e){
             dataResult.setCode(500);
             dataResult.setMessage(e.getMessage());
+            logger.error("auth error", e);
         }
         return JSON.toJSONString(dataResult);
     }
