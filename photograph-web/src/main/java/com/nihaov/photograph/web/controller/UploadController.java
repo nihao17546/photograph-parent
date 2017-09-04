@@ -106,7 +106,7 @@ public class UploadController {
             }
             dataResult.setCode(200);
             dataResult.setMessage("操作成功");
-            dataResult.setResult("http://fdfs.nihaov.com/look/out/" + fileName);
+            dataResult.setResult("http://fdfs.nihaov.com/look/out/" + today + fileName);
         }catch (Exception e){
             dataResult.setCode(500);
             dataResult.setMessage("系统错误");
