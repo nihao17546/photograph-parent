@@ -97,16 +97,19 @@ public class UploadController {
             else{
                 fileName = UUID.randomUUID().toString() + ".gif";
                 AnimatedGifEncoder e = new AnimatedGifEncoder();
-                e.setDelay(200);
+                BufferedImage bufferedImage1 = ImageUtils.drawTextInImg(sourcePath, fontText, 5);
+                BufferedImage bufferedImage2 = ImageUtils.drawTextInImg(sourcePath, fontText, -5);
                 e.start(outPath+ "/" + fileName);
-                BufferedImage bufferedImage1 = ImageUtils.drawTextInImg(sourcePath, fontText, 2);
-                BufferedImage bufferedImage2 = ImageUtils.drawTextInImg(sourcePath, fontText, -2);
+                e.setRepeat(0);
                 e.addFrame(bufferedImage1);
+                e.setDelay(500);
                 e.addFrame(bufferedImage2);
+                e.setDelay(500);
+                e.finish();
             }
             dataResult.setCode(200);
             dataResult.setMessage("操作成功");
-            dataResult.setResult("http://fdfs.nihaov.com/look/out/" + today + fileName);
+            dataResult.setResult("http://fdfs.nihaov.com/look/out/" + today + "/" + fileName);
         }catch (Exception e){
             dataResult.setCode(500);
             dataResult.setMessage("系统错误");
