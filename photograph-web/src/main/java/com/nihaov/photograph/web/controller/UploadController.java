@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +39,7 @@ public class UploadController {
     private QINIUUtils qiniuUtils;
     private final String qiniuPrefixUrl = "http://ovstg74bg.bkt.clouddn.com/";
 
-    @RequestMapping(value = "/look")
+    @RequestMapping(value = "/look",method = RequestMethod.POST)
     @ResponseBody
     public String look(@RequestParam(value = "file",required = true) MultipartFile multipartFile,
                          @RequestParam(value = "word", required = true) String word,

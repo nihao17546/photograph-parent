@@ -45,6 +45,10 @@ public class ImageUtils {
         Graphics2D g = bimage.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                RenderingHints.VALUE_STROKE_PURE);
+        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
         g.setColor(getColor(text.getWm_text_color()));
         g.setBackground(Color.white);
         g.drawImage(img, 0, 0, null);
@@ -56,7 +60,7 @@ public class ImageUtils {
         } else {
             font = new Font(null, Font.BOLD, 15);
         }
-
+        g.setStroke(new BasicStroke(3.0f));
         g.setFont(font);
         FontMetrics metrics = new FontMetrics(font){};
         Rectangle2D bounds = metrics.getStringBounds(text.getText(), null);

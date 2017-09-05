@@ -15,10 +15,13 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -194,4 +197,34 @@ public class SimpleTest {
 //            }
 //        }
 //    }
+    @Test
+    public void tttttt() throws IOException {
+//        File file = new File("D:\\mydata\\ftp\\look\\out\\20170905\\7692605a-8772-4964-9021-b70a642a21d1.png");
+//        ImageIcon imgIcon = new ImageIcon("D:\\mydata\\ftp\\look\\out\\20170905\\7692605a-8772-4964-9021-b70a642a21d1.png");
+//        Image img = imgIcon.getImage();
+//        int width = img.getWidth(null);
+//        int height = img.getHeight(null);
+//        BufferedImage bimage = new BufferedImage(width, height,
+//                BufferedImage.TYPE_INT_RGB);
+//        Graphics2D g2=bimage.createGraphics();
+////g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+//        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+//        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+//        g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+////shadowGraphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+//        FontRenderContext frc = g2.getFontRenderContext();
+//        TextLayout tl = new TextLayout("网址：", new Font("宋体", Font.PLAIN,50), frc);
+//        Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(5, 25));
+//        g2.setStroke(new BasicStroke(3.0f));
+//        g2.setColor(Color.WHITE);
+//        g2.draw(sha);
+//        g2.setColor(Color.BLACK);
+//        g2.fill(sha);
+//        g2.dispose();
+//
+//        FileOutputStream out = new FileOutputStream("D:\\mydata\\ftp\\look\\out\\20170905\\333.png");
+//        ImageIO.write(bimage, "png", out);
+//        out.close();
+    }
 }
