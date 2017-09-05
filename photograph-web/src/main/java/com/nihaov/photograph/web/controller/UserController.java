@@ -12,6 +12,7 @@ import com.nihaov.photograph.pojo.po.UserPO;
 import com.nihaov.photograph.pojo.vo.DataResult;
 import com.nihaov.photograph.pojo.wx.WxUserInfo;
 import com.nihaov.photograph.service.IUserService;
+import com.nihaov.photograph.web.util.SecretPropertiesUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -49,10 +50,6 @@ public class UserController {
     @Resource
     private IUserDAO userDAO;
 
-    @Value("#{configProperties['appId']}")
-    private String appId;
-    @Value("#{configProperties['appSecret']}")
-    private String appSecret;
     @Value("#{configProperties['weixinAuthUrl']}")
     private String weixinAuthUrl;
 
@@ -88,9 +85,9 @@ public class UserController {
         String encryptedData = request.getParameter("encryptedData");
         String iv = request.getParameter("iv");
         HttpPost httpPost = new HttpPost(weixinAuthUrl);
-        StringBody appid = new StringBody(appId, ContentType.create(
+        StringBody appid = new StringBody(SecretPropertiesUtils.getAppId(), ContentType.create(
                 "text/plain", Consts.UTF_8));
-        StringBody secret = new StringBody(appSecret, ContentType.create(
+        StringBody secret = new StringBody(SecretPropertiesUtils.getAppSecret(), ContentType.create(
                 "text/plain", Consts.UTF_8));
         StringBody js_code = new StringBody(code, ContentType.create(
                 "text/plain", Consts.UTF_8));

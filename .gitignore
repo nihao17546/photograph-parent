@@ -15,4 +15,3 @@ lib
 **/.cache-*
 jdbc.properties
 redis.properties
-config.properties
