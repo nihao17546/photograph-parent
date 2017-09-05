@@ -5,7 +5,10 @@ import com.nihaov.photograph.common.utils.AnimatedGifEncoder;
 import com.nihaov.photograph.common.utils.FontText;
 import com.nihaov.photograph.common.utils.ImageUtils;
 import com.nihaov.photograph.common.utils.SimpleDateUtil;
+import com.nihaov.photograph.dao.IMGDAO;
+import com.nihaov.photograph.pojo.po.IMGPO;
 import com.nihaov.photograph.pojo.vo.DataResult;
+import com.nihaov.photograph.service.IUserService;
 import com.nihaov.photograph.web.util.QINIUUtils;
 import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
@@ -20,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,6 +43,10 @@ public class UploadController {
     @Resource
     private QINIUUtils qiniuUtils;
     private final String qiniuPrefixUrl = "http://ovstg74bg.bkt.clouddn.com/";
+    @Resource
+    private IMGDAO imgdao;
+    @Resource
+    private IUserService userService;
 
     @RequestMapping(value = "/look",method = RequestMethod.POST)
     @ResponseBody
@@ -47,17 +56,12 @@ public class UploadController {
                          @RequestParam(value = "size", required = true) Integer size,
                          @RequestParam(value = "color", required = true) String color,
                          @RequestParam(value = "family", required = true) String family,
-                         @RequestParam(value = "type", required = true) Integer type){
+                         @RequestParam(value = "type", required = true) Integer type,
+                         @RequestParam(value = "uid", required = true) Long uid){
         DataResult dataResult = new DataResult();
         String today = SimpleDateUtil.shortFormat(new Date()).replaceAll("-","");
-        String sourcePath = "/mydata/ftp/look/source/"
-                + today
-                + "/"
-                + UUID.randomUUID().toString()
-                + "-"
-                + multipartFile.getOriginalFilename();
-        String outPath = "/mydata/ftp/look/out/"
-                + today;
+        String sourcePath = "/mydata/ftp/look/source/" + today + "/" + UUID.randomUUID().toString() + "-" + multipartFile.getOriginalFilename();
+        String outPath = "/mydata/ftp/look/out/" + today;
         File sourceFile = new File(sourcePath);
         if(!sourceFile.getParentFile().exists()){
             sourceFile.getParentFile().mkdirs();
@@ -99,6 +103,22 @@ public class UploadController {
                 dataResult.setCode(200);
                 dataResult.setMessage("操作成功");
                 dataResult.setResult(qiniuPrefixUrl + result.getMsg());
+                //数据库存储
+                IMGPO imgpo = new IMGPO();
+                imgpo.setTitle("用户上传图片" + uid);
+                imgpo.setCompressSrc((String)dataResult.getResult());
+                imgpo.setSrc((String)dataResult.getResult());
+                ImageIcon imgIcon = new ImageIcon(filePath);
+                Image img = imgIcon.getImage();
+                int width = img.getWidth(null);
+                int height = img.getHeight(null);
+                imgpo.setWidth(width);
+                imgpo.setHeight(height);
+                imgpo.setSavePath("http://fdfs.nihaov.com/look/out/" + today + fileName);
+                int r = imgdao.insertPic(imgpo);
+                if(r == 1){
+                    userService.favo(uid ,imgpo.getId());
+                }
             }
             else{
                 dataResult.setCode(500);

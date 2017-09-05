@@ -14,4 +14,5 @@ public interface IMGDAO {
     int insertError(@Param("imageId") Long imageId,@Param("errMsg") String errMsg);
     List<IMGPO> selectOwnFavo(@Param("uid") Long uid,RowBounds rowBounds);
     long selectOwnCount(@Param("uid") Long uid);
+    int insertPic(IMGPO imgpo);
 }
