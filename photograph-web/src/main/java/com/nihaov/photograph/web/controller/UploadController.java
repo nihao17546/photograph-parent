@@ -14,10 +14,7 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -48,10 +45,10 @@ public class UploadController {
     @Resource
     private IUserService userService;
 
-    @RequestMapping(value = "/look",method = RequestMethod.POST)
+    @RequestMapping(value = "/look/{word}",method = RequestMethod.POST)
     @ResponseBody
     public String look(@RequestParam(value = "file",required = true) MultipartFile multipartFile,
-                         @RequestParam(value = "word", required = true) String word,
+                         @PathVariable("word") String word,
                          @RequestParam(value = "pos", required = true) Integer pos,
                          @RequestParam(value = "size", required = true) Integer size,
                          @RequestParam(value = "color", required = true) String color,
