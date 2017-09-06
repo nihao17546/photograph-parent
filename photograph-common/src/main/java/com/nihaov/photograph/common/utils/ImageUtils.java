@@ -34,9 +34,7 @@ public class ImageUtils {
         }
     }
 
-    public static BufferedImage drawTextInImg(String filePath, FontText text, int jump) {
-        ImageIcon imgIcon = new ImageIcon(filePath);
-        Image img = imgIcon.getImage();
+    public static BufferedImage drawTextInImg(Image img, FontText text, int jump) {
         int width = img.getWidth(null);
         int height = img.getHeight(null);
         BufferedImage bimage = new BufferedImage(width, height,

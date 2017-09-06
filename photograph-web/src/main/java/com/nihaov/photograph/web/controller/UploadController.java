@@ -45,16 +45,17 @@ public class UploadController {
     @Resource
     private IUserService userService;
 
-    @RequestMapping(value = "/look/{word}",method = RequestMethod.POST)
+    @RequestMapping(value = "/look")
     @ResponseBody
     public String look(@RequestParam(value = "file",required = true) MultipartFile multipartFile,
-                         @PathVariable("word") String word,
+                         @RequestParam(value = "word", required = true) String word,
                          @RequestParam(value = "pos", required = true) Integer pos,
                          @RequestParam(value = "size", required = true) Integer size,
                          @RequestParam(value = "color", required = true) String color,
                          @RequestParam(value = "family", required = true) String family,
                          @RequestParam(value = "type", required = true) Integer type,
                          @RequestParam(value = "uid", required = true) Long uid){
+        logger.info("word: {},family: {}", word, family);
         DataResult dataResult = new DataResult();
         String today = SimpleDateUtil.shortFormat(new Date()).replaceAll("-","");
         String sourcePath = "/mydata/ftp/look/source/" + today + "/" + UUID.randomUUID().toString() + "-" + multipartFile.getOriginalFilename();
@@ -71,10 +72,12 @@ public class UploadController {
             String filePath = null,fileName = null;
             FontText fontText = new FontText(word, pos, color, size, family);
             Thumbnails.of(multipartFile.getInputStream()).size(500,500).toFile(sourceFile);
+            ImageIcon imgIcon = new ImageIcon(sourcePath);
+            Image img = imgIcon.getImage();
             if(type == 1){//固定文字
                 fileName = UUID.randomUUID().toString() + ".png";
                 filePath = outPath + "/" + fileName;
-                BufferedImage bufferedImage = ImageUtils.drawTextInImg(sourcePath, fontText, 0);
+                BufferedImage bufferedImage = ImageUtils.drawTextInImg(img, fontText, 0);
                 FileOutputStream out = new FileOutputStream(filePath);
                 ImageIO.write(bufferedImage, "png", out);
                 out.close();
@@ -83,8 +86,8 @@ public class UploadController {
                 fileName = UUID.randomUUID().toString() + ".gif";
                 filePath = outPath+ "/" + fileName;
                 AnimatedGifEncoder e = new AnimatedGifEncoder();
-                BufferedImage bufferedImage1 = ImageUtils.drawTextInImg(sourcePath, fontText, 5);
-                BufferedImage bufferedImage2 = ImageUtils.drawTextInImg(sourcePath, fontText, -5);
+                BufferedImage bufferedImage1 = ImageUtils.drawTextInImg(img, fontText, 9);
+                BufferedImage bufferedImage2 = ImageUtils.drawTextInImg(img, fontText, -1);
                 e.start(filePath);
                 e.setRepeat(0);
                 e.addFrame(bufferedImage1);
@@ -105,8 +108,6 @@ public class UploadController {
                 imgpo.setTitle("用户上传图片" + uid);
                 imgpo.setCompressSrc((String)dataResult.getResult());
                 imgpo.setSrc((String)dataResult.getResult());
-                ImageIcon imgIcon = new ImageIcon(filePath);
-                Image img = imgIcon.getImage();
                 int width = img.getWidth(null);
                 int height = img.getHeight(null);
                 imgpo.setWidth(width);
