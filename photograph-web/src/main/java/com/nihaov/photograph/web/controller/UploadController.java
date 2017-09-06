@@ -52,10 +52,9 @@ public class UploadController {
                          @RequestParam(value = "pos", required = true) Integer pos,
                          @RequestParam(value = "size", required = true) Integer size,
                          @RequestParam(value = "color", required = true) String color,
-                         @RequestParam(value = "family", required = true) String family,
+                         @RequestParam(value = "family", required = false) String family,
                          @RequestParam(value = "type", required = true) Integer type,
                          @RequestParam(value = "uid", required = true) Long uid){
-        logger.info("word: {},family: {}", word, family);
         DataResult dataResult = new DataResult();
         String today = SimpleDateUtil.shortFormat(new Date()).replaceAll("-","");
         String sourcePath = "/mydata/ftp/look/source/" + today + "/" + UUID.randomUUID().toString() + "-" + multipartFile.getOriginalFilename();
@@ -86,8 +85,8 @@ public class UploadController {
                 fileName = UUID.randomUUID().toString() + ".gif";
                 filePath = outPath+ "/" + fileName;
                 AnimatedGifEncoder e = new AnimatedGifEncoder();
-                BufferedImage bufferedImage1 = ImageUtils.drawTextInImg(img, fontText, 9);
-                BufferedImage bufferedImage2 = ImageUtils.drawTextInImg(img, fontText, -1);
+                BufferedImage bufferedImage1 = ImageUtils.drawTextInImg(img, fontText, 10);
+                BufferedImage bufferedImage2 = ImageUtils.drawTextInImg(img, fontText, 0);
                 e.start(filePath);
                 e.setRepeat(0);
                 e.addFrame(bufferedImage1);
