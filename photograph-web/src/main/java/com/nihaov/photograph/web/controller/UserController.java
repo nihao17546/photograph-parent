@@ -12,6 +12,7 @@ import com.nihaov.photograph.pojo.po.UserPO;
 import com.nihaov.photograph.pojo.vo.DataResult;
 import com.nihaov.photograph.pojo.wx.WxUserInfo;
 import com.nihaov.photograph.service.IUserService;
+import com.nihaov.photograph.web.util.LoginUtils;
 import com.nihaov.photograph.web.util.SecretPropertiesUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
@@ -49,6 +50,8 @@ public class UserController {
     private IUserService userService;
     @Resource
     private IUserDAO userDAO;
+    @Resource
+    private LoginUtils loginUtils;
 
     @Value("#{configProperties['weixinAuthUrl']}")
     private String weixinAuthUrl;
@@ -122,6 +125,8 @@ public class UserController {
                 userPO.setCity(wxUserInfo.getCity());
                 userPO.setProvince(wxUserInfo.getProvince());
                 UserPO rePO = userService.auth(userPO);
+                //登录记录
+                loginUtils.login(request, rePO.getId());
                 dataResult.setCode(200);
                 dataResult.setResult(rePO);
             }
@@ -149,6 +154,8 @@ public class UserController {
             dataResult.setCode(500);
         }
         else{
+            //登录记录
+            loginUtils.login(request, userPO.getId());
             dataResult.setCode(200);
             dataResult.setResult(userPO);
         }

@@ -139,4 +139,13 @@ public class ImgController {
         dataResult.setCode(200);
         return JSON.toJSONString(dataResult);
     }
+
+    @RequestMapping("/getHelpSrc")
+    @ResponseBody
+    public String getHelpSrc(HttpServletRequest request){
+        DataResult dataResult = new DataResult();
+        dataResult.setCode(200);
+        dataResult.setResult("http://ovstg74bg.bkt.clouddn.com/help1.png");
+        return JSON.toJSONString(dataResult);
+    }
 }

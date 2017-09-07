@@ -27,4 +27,8 @@
         insert into tb_suggesuion(uid,content,created_at)
         values(#{uid},#{content},now())
     </insert>
+    <update id="updateByUnionId" parameterType="com.nihaov.photograph.pojo.po.UserPO">
+        update tb_user set nickname=#{nickname},head_pic=#{headPic},gender=#{gender},
+        country=#{country},city=#{city},province=#{province},updated_at=now() where union_id=#{unionId}
+    </update>
 </mapper>

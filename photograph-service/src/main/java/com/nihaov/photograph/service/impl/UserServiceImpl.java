@@ -30,6 +30,24 @@ public class UserServiceImpl implements IUserService {
 
     private String userIdRegex = "^[0-9A-Za-z]{6,12}$";
 
+    private boolean eq(String s1, String s2){
+        if(s1==null&&s2==null){
+            return true;
+        }
+        else if(s1!=null&&s2==null){
+            return false;
+        }
+        else if(s1==null&&s2!=null){
+            return false;
+        }
+        else if(s1.equals(s2)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     @Transactional
     @Override
     public void regist(UserPO userPO) {
@@ -70,10 +88,35 @@ public class UserServiceImpl implements IUserService {
         if(checkPO==null){
             userDAO.insert(userPO);
         }
+        else{
+            boolean update = false;
+            if(!eq(userPO.getCity(),checkPO.getCity())){
+                update = true;
+            }
+            else if(!eq(userPO.getCountry(),checkPO.getCountry())){
+                update = true;
+            }
+            else if(!eq(userPO.getProvince(),checkPO.getProvince())){
+                update = true;
+            }
+            else if(!eq(userPO.getHeadPic(),checkPO.getHeadPic())){
+                update = true;
+            }
+            else if(!eq(userPO.getNickname(),checkPO.getNickname())){
+                update = true;
+            }
+            else if(userPO.getGender() != checkPO.getGender()){
+                update = true;
+            }
+            if(update){
+                userDAO.updateByUnionId(userPO);
+            }
+        }
         userPO.setPassword(null);
         if(userPO.getId()==null){
             userPO.setId(checkPO.getId());
         }
+
         return userPO;
     }
 

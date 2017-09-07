@@ -20,4 +20,5 @@ public interface IUserDAO {
     List<ImagePO> selectFavo(@Param("uid") Long uid,RowBounds rowBounds);
     int deleteFavo(@Param("uid") Long uid,@Param("picId") Long picId);
     int insertSuggestion(@Param("uid") Long uid,@Param("content") String content);
+    int updateByUnionId(UserPO userPO);
 }
