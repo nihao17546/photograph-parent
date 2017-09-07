@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
@@ -30,6 +31,22 @@ import java.util.concurrent.FutureTask;
  * Created by nihao on 17/5/21.
  */
 public class SimpleTest {
+    @Test
+    public void uu() throws Exception{
+//        CloseableHttpClient httpClient = HttpClientUtils.getHttpClient();
+//        HttpEntity reqEntity = MultipartEntityBuilder.create()
+//                .addTextBody("grant_type", "client_credentials")
+//                .addTextBody("client_id", "Gy4QSEYxH2DXnqGhsuLYZUK4")
+//                .addTextBody("client_secret", "62QnyknN2bcNob3xqMhvcFi2hX2RXpzy")
+//                .build();
+//        HttpPost httpPost = new HttpPost("https://aip.baidubce.com/oauth/2.0/token");
+//        httpPost.setEntity(reqEntity);
+//        HttpClientUtils.config(httpPost);
+//        CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
+//        HttpEntity entity = httpResponse.getEntity();
+//        System.out.println(EntityUtils.toString(entity));
+    }
+
 //    private String a = "cweveverberbe";
 //
 //    @Test

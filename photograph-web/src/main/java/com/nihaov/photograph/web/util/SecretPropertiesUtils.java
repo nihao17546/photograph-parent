@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nihao on 17/9/5.
@@ -16,19 +18,20 @@ public class SecretPropertiesUtils {
     private static String secretKey = null;
     private static String appId = null;
     private static String appSecret = null;
+    private static String baiduAppId = null;
+    private static String baiduSecretKey = null;
 
     @Resource
     private ISecretDAO secretDAO;
     @PostConstruct
     public void init() {
-        SecretPO accessKeyPO = secretDAO.selectByName("七牛accessKey");
-        SecretPO secretKeyPO = secretDAO.selectByName("七牛secretKey");
-        SecretPO appIdPO = secretDAO.selectByName("微信appId");
-        SecretPO appSecretPO = secretDAO.selectByName("微信appSecret");
-        accessKey = accessKeyPO.getValue().trim();
-        secretKey = secretKeyPO.getValue().trim();
-        appId = appIdPO.getValue().trim();
-        appSecret = appSecretPO.getValue().trim();
+        Map<String,SecretPO> map = secretDAO.selectAll();
+        accessKey = map.get("七牛accessKey").getValue().trim();
+        secretKey = map.get("七牛secretKey").getValue().trim();
+        appId = map.get("微信appId").getValue().trim();
+        appSecret = map.get("微信appSecret").getValue().trim();
+        baiduAppId = map.get("百度appId").getValue().trim();
+        baiduSecretKey = map.get("百度secretKey").getValue().trim();
     }
 
 
@@ -46,5 +49,13 @@ public class SecretPropertiesUtils {
 
     public static String getAppSecret() {
         return appSecret;
+    }
+
+    public static String getBaiduAppId() {
+        return baiduAppId;
+    }
+
+    public static String getBaiduSecretKey() {
+        return baiduSecretKey;
     }
 }
