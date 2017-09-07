@@ -129,4 +129,12 @@ public class UploadController {
         }
         return JSON.toJSONString(dataResult);
     }
+
+//    @RequestMapping(value = "/face")
+//    @ResponseBody
+//    public String face(@RequestParam(value = "file",required = true) MultipartFile multipartFile,
+//                       @RequestParam(value = "uid", required = true) Long uid){
+//        DataResult dataResult = new DataResult();
+//
+//    }
 }

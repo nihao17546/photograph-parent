@@ -79,18 +79,20 @@ public class BaseUtil {
     }
 
     private static BASE64Encoder encoder = new BASE64Encoder();
-    public static String getBase64(InputStream inputStream){
+    public static String getBase64(InputStream inputStream, Boolean close){
         String s = null;
         try {
             s = encoder.encode(toByteArray(inputStream));
         } catch (Exception e) {
             logger.error("转base64错误", e);
         }finally {
-            if(inputStream != null){
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    logger.error("close InputStream error", e);
+            if(close != null && close){
+                if(inputStream != null){
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        logger.error("close InputStream error", e);
+                    }
                 }
             }
         }
