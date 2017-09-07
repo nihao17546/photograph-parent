@@ -1,14 +1,12 @@
 package com.nihaov.photograph.web.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.nihaov.photograph.common.utils.AnimatedGifEncoder;
-import com.nihaov.photograph.common.utils.FontText;
-import com.nihaov.photograph.common.utils.ImageUtils;
-import com.nihaov.photograph.common.utils.SimpleDateUtil;
+import com.nihaov.photograph.common.utils.*;
 import com.nihaov.photograph.dao.IMGDAO;
 import com.nihaov.photograph.pojo.po.IMGPO;
 import com.nihaov.photograph.pojo.vo.DataResult;
 import com.nihaov.photograph.service.IUserService;
+import com.nihaov.photograph.web.util.BaiduUtils;
 import com.nihaov.photograph.web.util.QINIUUtils;
 import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
@@ -27,6 +25,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -44,6 +44,8 @@ public class UploadController {
     private IMGDAO imgdao;
     @Resource
     private IUserService userService;
+    @Resource
+    private BaiduUtils baiduUtils;
 
     @RequestMapping(value = "/look")
     @ResponseBody
@@ -126,6 +128,66 @@ public class UploadController {
             dataResult.setCode(500);
             dataResult.setMessage("系统错误");
             logger.error("图片处理错误",e);
+        }
+        return JSON.toJSONString(dataResult);
+    }
+
+    @RequestMapping("/face")
+    @ResponseBody
+    public String face(@RequestParam(value = "file",required = true) MultipartFile multipartFile,
+                       @RequestParam(value = "uid", required = true) Long uid,
+                       @RequestParam(value = "current", required = true) String current){
+        DataResult dataResult = new DataResult();
+        String today = SimpleDateUtil.shortFormat(new Date()).replaceAll("-","");
+        String fileName = UUID.randomUUID().toString() + "-" + multipartFile.getOriginalFilename();
+        String sourcePath = "/mydata/ftp/face/" + today + "/" + uid + "/" + fileName;
+        File file = new File(sourcePath);
+        if(!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
+        }
+        try {
+            multipartFile.transferTo(file);
+            QINIUUtils.Result result = qiniuUtils.upload(sourcePath, "uid" + uid + fileName);
+            if(result.getRet() == 1){
+                String pic = qiniuPrefixUrl + result.getMsg();
+                //数据库存储
+                IMGPO imgpo = new IMGPO();
+                imgpo.setTitle("用户上传照片" + uid);
+                imgpo.setCompressSrc(pic);
+                imgpo.setSrc(pic);
+                ImageIcon imgIcon = new ImageIcon(sourcePath);
+                Image img = imgIcon.getImage();
+                int width = img.getWidth(null);
+                int height = img.getHeight(null);
+                imgpo.setWidth(width);
+                imgpo.setHeight(height);
+                imgpo.setSavePath("http://fdfs.nihaov.com/face/" + today + "/" + uid + "/" + fileName);
+                imgdao.insertPic(imgpo);
+                //图像识别
+                String image = BaseUtil.getBase64(multipartFile.getInputStream(), false);
+                BaiduUtils.Detect detect = baiduUtils.detect(image);
+                if(detect == null){
+                    dataResult.setCode(500);
+                    dataResult.setMessage("抱歉图像识别错误，请稍后再试。");
+                }
+                else{
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("pic", pic);
+                    map.put("face", detect);
+                    dataResult.setCode(200);
+                    dataResult.setMessage("success");
+                    dataResult.setResult(map);
+                }
+            }
+            else{
+                dataResult.setCode(500);
+                dataResult.setMessage(result.getMsg());
+                return JSON.toJSONString(dataResult);
+            }
+        } catch (Exception e) {
+            logger.error("上传face失败", e);
+            dataResult.setCode(500);
+            dataResult.setMessage("抱歉，服务器异常，请稍后再试。");
         }
         return JSON.toJSONString(dataResult);
     }
