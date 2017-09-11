@@ -5,6 +5,7 @@ import com.nihaov.photograph.common.utils.*;
 import com.nihaov.photograph.dao.IMGDAO;
 import com.nihaov.photograph.pojo.po.IMGPO;
 import com.nihaov.photograph.pojo.vo.DataResult;
+import com.nihaov.photograph.pojo.vo.FaceVO;
 import com.nihaov.photograph.service.IUserService;
 import com.nihaov.photograph.web.util.BaiduUtils;
 import com.nihaov.photograph.web.util.QINIUUtils;
@@ -24,10 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by nihao on 17/8/25.
@@ -113,7 +111,7 @@ public class UploadController {
                 int height = img.getHeight(null);
                 imgpo.setWidth(width);
                 imgpo.setHeight(height);
-                imgpo.setSavePath("http://fdfs.nihaov.com/look/out/" + today + fileName);
+                imgpo.setSavePath("http://fdfs.nihaov.com/look/out/" + today + "/" + fileName);
                 int r = imgdao.insertPic(imgpo);
                 if(r == 1){
                     userService.favo(uid ,imgpo.getId());
@@ -146,43 +144,38 @@ public class UploadController {
             file.getParentFile().mkdirs();
         }
         try {
-            multipartFile.transferTo(file);
-            QINIUUtils.Result result = qiniuUtils.upload(sourcePath, "uid" + uid + fileName);
-            if(result.getRet() == 1){
-                String pic = qiniuPrefixUrl + result.getMsg();
-                //数据库存储
-                IMGPO imgpo = new IMGPO();
-                imgpo.setTitle("用户上传照片" + uid);
-                imgpo.setCompressSrc(pic);
-                imgpo.setSrc(pic);
-                ImageIcon imgIcon = new ImageIcon(sourcePath);
-                Image img = imgIcon.getImage();
-                int width = img.getWidth(null);
-                int height = img.getHeight(null);
-                imgpo.setWidth(width);
-                imgpo.setHeight(height);
-                imgpo.setSavePath("http://fdfs.nihaov.com/face/" + today + "/" + uid + "/" + fileName);
-                imgdao.insertPic(imgpo);
-                //图像识别
-                String image = BaseUtil.getBase64(multipartFile.getInputStream(), false);
-                BaiduUtils.Detect detect = baiduUtils.detect(image);
-                if(detect == null){
-                    dataResult.setCode(500);
-                    dataResult.setMessage("抱歉图像识别错误，请稍后再试。");
-                }
-                else{
-                    Map<String,Object> map = new HashMap<>();
-                    map.put("pic", pic);
-                    map.put("face", detect);
-                    dataResult.setCode(200);
-                    dataResult.setMessage("success");
-                    dataResult.setResult(map);
-                }
+            Thumbnails.of(multipartFile.getInputStream()).size(500,500).toFile(file);
+            //数据库存储
+            IMGPO imgpo = new IMGPO();
+            imgpo.setTitle("用户上传照片" + uid);
+            imgpo.setCompressSrc("http://fdfs.nihaov.com/face/" + today + "/" + uid + "/" + fileName);
+            imgpo.setSrc("http://fdfs.nihaov.com/face/" + today + "/" + uid + "/" + fileName);
+            ImageIcon imgIcon = new ImageIcon(sourcePath);
+            Image img = imgIcon.getImage();
+            int width = img.getWidth(null);
+            int height = img.getHeight(null);
+            imgpo.setWidth(width);
+            imgpo.setHeight(height);
+            imgpo.setSavePath("http://fdfs.nihaov.com/face/" + today + "/" + uid + "/" + fileName);
+            imgdao.insertPic(imgpo);
+            //图像识别
+            String image = BaseUtil.getBase64(multipartFile.getInputStream(), false);
+            BaiduUtils.Detect detect = baiduUtils.detect(image);
+            if(detect == null){
+                dataResult.setCode(500);
+                dataResult.setMessage("抱歉图像识别错误，请稍后再试。");
             }
             else{
-                dataResult.setCode(500);
-                dataResult.setMessage(result.getMsg());
-                return JSON.toJSONString(dataResult);
+                Map<String,Object> map = new HashMap<>();
+//                map.put("pic", "http://fdfs.nihaov.com/face/" + today + "/" + uid + "/" + fileName);
+                java.util.List<FaceVO> faceVOList = new ArrayList<>();
+                for(BaiduUtils.DetectResult detectResult : detect.getResult()){
+                    faceVOList.add(BaiduUtils.getFace(detectResult).setPicH(height).setPicW(width));
+                }
+                map.put("face", faceVOList);
+                dataResult.setCode(200);
+                dataResult.setMessage("success");
+                dataResult.setResult(map);
             }
         } catch (Exception e) {
             logger.error("上传face失败", e);

@@ -23,6 +23,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -243,5 +244,11 @@ public class SimpleTest {
 //        FileOutputStream out = new FileOutputStream("D:\\mydata\\ftp\\look\\out\\20170905\\333.png");
 //        ImageIO.write(bimage, "png", out);
 //        out.close();
+    }
+    @Test
+    public void dasd(){
+        DecimalFormat df = new DecimalFormat("######0");
+        Double b = 0.97897986777768;
+        System.out.println("-----");
     }
 }
