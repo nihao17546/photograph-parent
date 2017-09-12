@@ -18,7 +18,7 @@
     </select>
     <insert id="insertPic" useGeneratedKeys="true" keyProperty="id"
             parameterType="com.nihaov.photograph.pojo.po.IMGPO">
-        insert into tb_img(title,compress_src,src,width,height,created_at,flag,save_path)
-        values(#{title},#{compressSrc},#{src},#{width},#{height},now(),2,#{savePath})
+        insert into tb_img(title,compress_src,src,width,height,created_at,flag,save_path,uid)
+        values(#{title},#{compressSrc},#{src},#{width},#{height},now(),2,#{savePath},#{uid})
     </insert>
 </mapper>

@@ -95,7 +95,6 @@ public class BaiduUtils {
             httpResponse = httpClient.execute(httpPost);
             entity = httpResponse.getEntity();
             String str = EntityUtils.toString(entity);
-            System.out.println(str);
             Map<String,Object> map = JSON.parseObject(str);
             if(map.containsKey("error_code")){
                 throw new RuntimeException("响应数据:" + str);

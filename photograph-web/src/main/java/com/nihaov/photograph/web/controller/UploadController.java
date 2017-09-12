@@ -112,6 +112,7 @@ public class UploadController {
                 imgpo.setWidth(width);
                 imgpo.setHeight(height);
                 imgpo.setSavePath("http://fdfs.nihaov.com/look/out/" + today + "/" + fileName);
+                imgpo.setUid(uid);
                 int r = imgdao.insertPic(imgpo);
                 if(r == 1){
                     userService.favo(uid ,imgpo.getId());
@@ -157,6 +158,7 @@ public class UploadController {
             imgpo.setWidth(width);
             imgpo.setHeight(height);
             imgpo.setSavePath("http://fdfs.nihaov.com/face/" + today + "/" + uid + "/" + fileName);
+            imgpo.setUid(uid);
             imgdao.insertPic(imgpo);
             //图像识别
             String image = BaseUtil.getBase64(multipartFile.getInputStream(), false);
