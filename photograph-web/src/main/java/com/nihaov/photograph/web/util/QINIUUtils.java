@@ -21,7 +21,7 @@ public class QINIUUtils {
 
     private String lookBucket = "mydata";
 
-    public Result upload(File file, String key){
+    public Result upload(File file, String key, String lookBucket){
         Result result = new Result();
         Configuration configuration = new Configuration();
         UploadManager uploadManager = new UploadManager(configuration);
@@ -40,6 +40,10 @@ public class QINIUUtils {
             result.setMsg("抱歉服务异常,请联系管理员:nhweiwin(微信号)");
         }
         return result;
+    }
+
+    public Result upload(File file, String key){
+        return upload(file, key, lookBucket);
     }
 
     public Result upload(String filePath, String key){
