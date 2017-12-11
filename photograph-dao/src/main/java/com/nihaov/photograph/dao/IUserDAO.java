@@ -17,7 +17,6 @@ public interface IUserDAO {
     UserPO selectByUserIdAndPassword(@Param("userId") String userId,@Param("password") String password);
     UserPO selectByUnionId(@Param("unionId") String unionId);
     int insertFavo(UserFavoPO userFavoPO);
-    List<ImagePO> selectFavo(@Param("uid") Long uid,RowBounds rowBounds);
     int deleteFavo(@Param("uid") Long uid,@Param("picId") Long picId);
     int insertSuggestion(@Param("uid") Long uid,@Param("content") String content);
     int updateByUnionId(UserPO userPO);
