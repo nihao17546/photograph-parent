@@ -1,6 +1,5 @@
 package com.nihaov.photograph.pojo.vo;
 
-import com.nihaov.photograph.pojo.po.ImagePO;
 
 import java.util.Date;
 import java.util.List;
@@ -19,15 +18,6 @@ public class ImageVO {
     private Date createdAt;
 
     public ImageVO() {
-    }
-
-    public ImageVO(ImagePO imagePO) {
-        this.id=imagePO.getId();
-        this.title=imagePO.getTitle();
-        this.path=imagePO.getPath();
-        this.width=imagePO.getWidth();
-        this.height=imagePO.getHeight();
-        this.createdAt=imagePO.getCreatedAt();
     }
 
     public Long getId() {

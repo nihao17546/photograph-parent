@@ -8,11 +8,13 @@ import java.util.Date;
 public class ImagePO {
     private Long id;
     private String title;
-    private String path;
-    private Long uid;
-    private Date createdAt;
+    private String compressSrc;
+    private String src;
     private Integer width;
     private Integer height;
+    private Date createdAt;
+    private Boolean flag;
+    private Long uid;
 
     public Long getId() {
         return id;
@@ -30,28 +32,20 @@ public class ImagePO {
         this.title = title;
     }
 
-    public String getPath() {
-        return path;
+    public String getCompressSrc() {
+        return compressSrc;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setCompressSrc(String compressSrc) {
+        this.compressSrc = compressSrc;
     }
 
-    public Long getUid() {
-        return uid;
+    public String getSrc() {
+        return src;
     }
 
-    public void setUid(Long uid) {
-        this.uid = uid;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setSrc(String src) {
+        this.src = src;
     }
 
     public Integer getWidth() {
@@ -68,5 +62,29 @@ public class ImagePO {
 
     public void setHeight(Integer height) {
         this.height = height;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Boolean getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Boolean flag) {
+        this.flag = flag;
+    }
+
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
     }
 }

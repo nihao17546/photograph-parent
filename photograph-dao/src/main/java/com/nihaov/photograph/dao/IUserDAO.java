@@ -1,12 +1,8 @@
 package com.nihaov.photograph.dao;
 
-import com.nihaov.photograph.pojo.po.ImagePO;
 import com.nihaov.photograph.pojo.po.UserFavoPO;
 import com.nihaov.photograph.pojo.po.UserPO;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.RowBounds;
-
-import java.util.List;
 
 /**
  * Created by nihao on 17/6/11.

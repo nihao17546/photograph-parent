@@ -29,7 +29,7 @@ import java.net.UnknownHostException;
  * Created by nihao on 17/7/18.
  */
 public class HttpClientUtils {
-    private static final int timeOut = 10 * 1000;
+    private static final int timeOut = 10 * 1000 * 6;
     private static final int maxTotal = 200;
     private static final int maxPerRoute = 40;
     private static CloseableHttpClient httpClient = null;

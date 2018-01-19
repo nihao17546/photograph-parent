@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nihaov.photograph.dao.IDataDAO">
+    <select id="selectImgPagination"
+            resultType="com.nihaov.photograph.pojo.po.IMGPO">
+        select * from tb_img order by id desc
+    </select>
+    <insert id="batchInsertImage">
+        insert into tb_image(id,title,compress_src,src,width,height
+        created_at,flag,uid)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.id},#{item.title},#{item.compressSrc},#{item.src},#{item.width},#{item.height},
+            #{item.createdAt},#{item.flag},#{item.uid}
+            )
+        </foreach>
+        on DUPLICATE KEY update
+        title=values(title),
+        compress_src=values(compress_src),
+        src=values(src),
+        width=values(width),
+        height=values(height),
+        created_at=values(created_at),
+        flag=values(flag),
+        uid=values(uid)
+    </insert>
+    <insert id="insert" parameterType="com.nihaov.photograph.pojo.po.ImagePO">
+        insert into tb_image(id,title,compress_src,src,width,height,
+        created_at,flag,uid)
+        values
+        (#{id},#{title},#{compressSrc},#{src},#{width},#{height},
+        #{createdAt},#{flag},#{uid})
+    </insert>
+    <select id="selectImg" resultType="com.nihaov.photograph.pojo.po.IMGPO">
+        select * from tb_img
+        where id not in(
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+        order by id
+    </select>
+    <select id="selectExist" resultType="java.lang.Long">
+        select id from tb_image
+    </select>
+</mapper>
