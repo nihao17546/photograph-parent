@@ -44,4 +44,11 @@
     <select id="selectExist" resultType="java.lang.Long">
         select id from tb_image
     </select>
+    <select id="selectImagePagination"
+            resultType="com.nihaov.photograph.pojo.po.ImagePO">
+        select * from tb_image order by id
+    </select>
+    <update id="updateCompress">
+        update tb_image set compress_src=#{compressSrc} where id=#{id}
+    </update>
 </mapper>

@@ -14,7 +14,6 @@ public class IMGPO {
     private Integer height;
     private Date createdAt;
     private Boolean flag;
-    private String savePath;
     private Long uid;
 
     public Long getId() {
@@ -79,14 +78,6 @@ public class IMGPO {
 
     public void setFlag(Boolean flag) {
         this.flag = flag;
-    }
-
-    public String getSavePath() {
-        return savePath;
-    }
-
-    public void setSavePath(String savePath) {
-        this.savePath = savePath;
     }
 
     public Long getUid() {

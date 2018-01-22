@@ -237,4 +237,86 @@ public class MainTest {
         }
     }
 
+    @Test
+    public void kroego(){
+        for(int i=1;i<=10;i++){
+            RowBounds rowBounds = new RowBounds((i - 1) * 1000, 1000);
+            List<ImagePO> sourceList = dataDAO.selectImagePagination(rowBounds);
+            for(ImagePO imgpo : sourceList){
+                if(!imgpo.getCompressSrc().contains("http://fdfs.nihaov.com/compress")){
+                    continue;
+                }
+                String savePath = imgpo.getCompressSrc()
+                        .replace("http://fdfs.nihaov.com/compress", "/Users/nihao/mydata/ftp/compress");
+
+                File file = null;
+                String fileName = imgpo.getCompressSrc().replace("http://fdfs.nihaov.com/compress/","")
+                        .replaceAll("/","_");
+
+                CloseableHttpClient httpClient = HttpClientUtils.getHttpClient();
+                CloseableHttpResponse response = null;
+                HttpEntity entity = null;
+                try {
+                    HttpGet httpGet = new HttpGet(imgpo.getCompressSrc());
+                    httpGet.setHeader("Content-Type","application/x-www-form-urlencoded");
+                    HttpClientUtils.config(httpGet);
+                    response = httpClient.execute(httpGet);
+                    if(response.getStatusLine().getStatusCode() != 200){
+                        throw new RuntimeException("下载图片失败:" + response.getStatusLine().getStatusCode());
+                    }
+                    entity = response.getEntity();
+                    InputStream inputStream = entity.getContent();
+
+                    file = new File(savePath);
+                    if(!file.getParentFile().exists()){
+                        file.getParentFile().mkdirs();
+                    }
+                    FileOutputStream out = new FileOutputStream(file);
+                    byte[] buf = new byte[1024 * 8];
+                    while (true){
+                        int read = 0;
+                        read = inputStream.read(buf);
+                        if(read == -1){
+                            break;
+                        }
+                        out.write(buf, 0, read);
+                    }
+                    out.flush();
+                    out.close();
+                }catch (Exception e){
+                    file = null;
+                    logger.error(e.getMessage() + ":" + imgpo.getCompressSrc());
+                }finally {
+                    if(entity!=null){
+                        try {
+                            EntityUtils.consume(entity);
+                        } catch (Exception e) {
+                            logger.error("close entity error",e);
+                        }
+                    }
+                    if(response!=null){
+                        try {
+                            response.close();
+                        } catch (Exception e) {
+                            logger.error("close response error",e);
+                        }
+                    }
+                }
+
+                if(file == null){
+                    continue;
+                }
+                QINIUUtils.Result result = null;
+                try{
+                    result = qiniuUtils.upload(file, fileName, "activity");
+                }catch (Exception e){
+                    logger.error("七牛上传错误:" + e.getMessage());
+                    continue;
+                }
+
+                int a = dataDAO.updateCompress(imgpo.getId(), "http://ox2n31sqv.bkt.clouddn.com/" + result.getMsg());
+                logger.info("------insert---id:{}---a:{}", imgpo.getId(), a);
+            }
+        }
+    }
 }

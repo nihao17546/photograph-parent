@@ -45,7 +45,7 @@ public class ImgController {
     @RequestMapping("/img/rand")
     @ResponseBody
     public String rand(HttpServletRequest request){
-        Integer limit = 60;
+        Integer limit = 32;
         String limit_ = request.getParameter("limit");
         if(!Strings.isNullOrEmpty(limit_))
             limit = Integer.parseInt(limit_);
@@ -97,7 +97,7 @@ public class ImgController {
     @RequestMapping("/random")
     @ResponseBody
     public String random(HttpServletRequest request){
-        Integer limit = 60;
+        Integer limit = 30;
         String limit_ = request.getParameter("limit");
         if(!Strings.isNullOrEmpty(limit_))
             limit = Integer.parseInt(limit_);

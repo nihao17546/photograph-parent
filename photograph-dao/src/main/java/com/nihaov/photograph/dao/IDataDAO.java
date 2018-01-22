@@ -16,4 +16,7 @@ public interface IDataDAO {
     int insert(ImagePO item);
     List<IMGPO> selectImg(@Param("list") List<Long> list, RowBounds rowBounds);
     List<Long> selectExist();
+    List<ImagePO> selectImagePagination(RowBounds rowBounds);
+    int updateCompress(@Param("id") Long id,
+                       @Param("compressSrc") String compressSrc);
 }

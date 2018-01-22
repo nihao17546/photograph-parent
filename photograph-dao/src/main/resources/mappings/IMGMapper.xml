@@ -2,23 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nihaov.photograph.dao.IMGDAO">
     <select id="selectRandom" resultType="com.nihaov.photograph.pojo.po.IMGPO">
-        select * from tb_img where flag=1 order by rand() limit #{limit}
+        select * from tb_image where flag=1 order by rand() limit #{limit}
     </select>
     <insert id="insertError">
         insert IGNORE into tb_error(image_id,err_msg,flag,created_at) values(#{imageId},#{errMsg},1,now())
     </insert>
     <select id="selectOwnCount" resultType="java.lang.Long">
-        select count(*) from tb_user_favo a,tb_img b
+        select count(*) from tb_user_favo a,tb_image b
         where a.uid=#{uid} and a.pic_id=b.id
     </select>
     <select id="selectOwnFavo" resultType="com.nihaov.photograph.pojo.po.IMGPO">
-        select b.* from tb_user_favo a,tb_img b
+        select b.* from tb_user_favo a,tb_image b
         where a.uid=#{uid} and a.pic_id=b.id
         order by a.created_at desc
     </select>
     <insert id="insertPic" useGeneratedKeys="true" keyProperty="id"
             parameterType="com.nihaov.photograph.pojo.po.IMGPO">
-        insert into tb_img(title,compress_src,src,width,height,created_at,flag,save_path,uid)
-        values(#{title},#{compressSrc},#{src},#{width},#{height},now(),2,#{savePath},#{uid})
+        insert into tb_image(title,compress_src,src,width,height,created_at,flag,uid)
+        values(#{title},#{compressSrc},#{src},#{width},#{height},now(),2,#{uid})
     </insert>
 </mapper>

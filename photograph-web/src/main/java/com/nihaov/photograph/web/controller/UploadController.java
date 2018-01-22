@@ -111,7 +111,7 @@ public class UploadController {
                 int height = img.getHeight(null);
                 imgpo.setWidth(width);
                 imgpo.setHeight(height);
-                imgpo.setSavePath("http://fdfs.nihaov.com/look/out/" + today + "/" + fileName);
+//                imgpo.setSavePath("http://fdfs.nihaov.com/look/out/" + today + "/" + fileName);
                 imgpo.setUid(uid);
                 int r = imgdao.insertPic(imgpo);
                 if(r == 1){
@@ -157,7 +157,7 @@ public class UploadController {
             int height = img.getHeight(null);
             imgpo.setWidth(width);
             imgpo.setHeight(height);
-            imgpo.setSavePath("http://fdfs.nihaov.com/face/" + today + "/" + uid + "/" + fileName);
+//            imgpo.setSavePath("http://fdfs.nihaov.com/face/" + today + "/" + uid + "/" + fileName);
             imgpo.setUid(uid);
             imgdao.insertPic(imgpo);
             //图像识别
