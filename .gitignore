@@ -15,4 +15,4 @@ lib
 **/.cache-*
 jdbc.properties
 redis.properties
-cofig.propertes
+cofig.properties
