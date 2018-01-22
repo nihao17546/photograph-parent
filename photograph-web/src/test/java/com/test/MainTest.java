@@ -130,112 +130,112 @@ public class MainTest {
     @Resource
     private QINIUUtils qiniuUtils;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Test
-    public void sdfsfd(){
-        List<Long> exist = dataDAO.selectExist();
-        for(int i=1;i<=10;i++){
-            RowBounds rowBounds = new RowBounds((i - 1) * 5000, 5000);
-            List<IMGPO> sourceList = dataDAO.selectImgPagination(rowBounds);
-            for(IMGPO imgpo : sourceList){
-                if(exist.contains(imgpo.getId())){
-                    continue;
-                }
-                if(imgpo.getTitle().startsWith("用户上传")){
-                    continue;
-                }
-                ImagePO po = new ImagePO();
-                po.setId(imgpo.getId());
-                po.setTitle(imgpo.getTitle());
-                po.setCompressSrc(imgpo.getCompressSrc());
-                po.setWidth(imgpo.getWidth());
-                po.setHeight(imgpo.getHeight());
-                po.setCreatedAt(imgpo.getCreatedAt());
-                po.setFlag(imgpo.getFlag());
-                po.setUid(imgpo.getUid());
-                String savePath = imgpo.getSavePath()
-                        .replace("http://fdfs.nihaov.com", "/Users/nihao/mydata/ftp");
-
-                File file = null;
-                String fileName = imgpo.getSavePath().replace("http://fdfs.nihaov.com/","")
-                        .replaceAll("/","_");
-
-                CloseableHttpClient httpClient = HttpClientUtils.getHttpClient();
-                CloseableHttpResponse response = null;
-                HttpEntity entity = null;
-                try {
-                    HttpGet httpGet = new HttpGet(imgpo.getSavePath());
-                    httpGet.setHeader("Content-Type","application/x-www-form-urlencoded");
-                    HttpClientUtils.config(httpGet);
-                    response = httpClient.execute(httpGet);
-                    if(response.getStatusLine().getStatusCode() != 200){
-                        throw new RuntimeException("下载图片失败:" + response.getStatusLine().getStatusCode());
-                    }
-                    entity = response.getEntity();
-                    InputStream inputStream = entity.getContent();
-
-                    file = new File(savePath);
-                    if(!file.getParentFile().exists()){
-                        file.getParentFile().mkdirs();
-                    }
-                    FileOutputStream out = new FileOutputStream(file);
-                    byte[] buf = new byte[1024 * 8];
-                    while (true){
-                        int read = 0;
-                        read = inputStream.read(buf);
-                        if(read == -1){
-                            break;
-                        }
-                        out.write(buf, 0, read);
-                    }
-                    out.flush();
-                    out.close();
-                }catch (Exception e){
-                    file = null;
-                    logger.error(e.getMessage() + ":" + imgpo.getSavePath());
-                }finally {
-                    if(entity!=null){
-                        try {
-                            EntityUtils.consume(entity);
-                        } catch (Exception e) {
-                            logger.error("close entity error",e);
-                        }
-                    }
-                    if(response!=null){
-                        try {
-                            response.close();
-                        } catch (Exception e) {
-                            logger.error("close response error",e);
-                        }
-                    }
-                }
-
-                if(file == null){
-                    continue;
-                }
-
-                if (imgpo.getCompressSrc().contains("http://fdfs.nihaov.com")){
-                    QINIUUtils.Result result = null;
-                    try{
-                        result = qiniuUtils.upload(file, fileName, "data");
-                    }catch (Exception e){
-                        logger.error("七牛上传错误:" + e.getMessage());
-                        continue;
-                    }
-                    if(result.getRet() != 1){
-                        logger.error("七牛上传错误:" + result.getMsg());
-                        continue;
-                    }
-                    po.setSrc("http://oy3ox608v.bkt.clouddn.com/" + result.getMsg());
-                    logger.info("------upload---id:{}------", imgpo.getId());
-                }
-                else{
-                    po.setSrc(imgpo.getCompressSrc());
-                }
-                int a = dataDAO.insert(po);
-                logger.info("------insert---id:{}---a:{}", imgpo.getId(), a);
-            }
-        }
-    }
+//    @Test
+//    public void sdfsfd(){
+//        List<Long> exist = dataDAO.selectExist();
+//        for(int i=1;i<=10;i++){
+//            RowBounds rowBounds = new RowBounds((i - 1) * 5000, 5000);
+//            List<IMGPO> sourceList = dataDAO.selectImgPagination(rowBounds);
+//            for(IMGPO imgpo : sourceList){
+//                if(exist.contains(imgpo.getId())){
+//                    continue;
+//                }
+//                if(imgpo.getTitle().startsWith("用户上传")){
+//                    continue;
+//                }
+//                ImagePO po = new ImagePO();
+//                po.setId(imgpo.getId());
+//                po.setTitle(imgpo.getTitle());
+//                po.setCompressSrc(imgpo.getCompressSrc());
+//                po.setWidth(imgpo.getWidth());
+//                po.setHeight(imgpo.getHeight());
+//                po.setCreatedAt(imgpo.getCreatedAt());
+//                po.setFlag(imgpo.getFlag());
+//                po.setUid(imgpo.getUid());
+//                String savePath = imgpo.getSavePath()
+//                        .replace("http://fdfs.nihaov.com", "/Users/nihao/mydata/ftp");
+//
+//                File file = null;
+//                String fileName = imgpo.getSavePath().replace("http://fdfs.nihaov.com/","")
+//                        .replaceAll("/","_");
+//
+//                CloseableHttpClient httpClient = HttpClientUtils.getHttpClient();
+//                CloseableHttpResponse response = null;
+//                HttpEntity entity = null;
+//                try {
+//                    HttpGet httpGet = new HttpGet(imgpo.getSavePath());
+//                    httpGet.setHeader("Content-Type","application/x-www-form-urlencoded");
+//                    HttpClientUtils.config(httpGet);
+//                    response = httpClient.execute(httpGet);
+//                    if(response.getStatusLine().getStatusCode() != 200){
+//                        throw new RuntimeException("下载图片失败:" + response.getStatusLine().getStatusCode());
+//                    }
+//                    entity = response.getEntity();
+//                    InputStream inputStream = entity.getContent();
+//
+//                    file = new File(savePath);
+//                    if(!file.getParentFile().exists()){
+//                        file.getParentFile().mkdirs();
+//                    }
+//                    FileOutputStream out = new FileOutputStream(file);
+//                    byte[] buf = new byte[1024 * 8];
+//                    while (true){
+//                        int read = 0;
+//                        read = inputStream.read(buf);
+//                        if(read == -1){
+//                            break;
+//                        }
+//                        out.write(buf, 0, read);
+//                    }
+//                    out.flush();
+//                    out.close();
+//                }catch (Exception e){
+//                    file = null;
+//                    logger.error(e.getMessage() + ":" + imgpo.getSavePath());
+//                }finally {
+//                    if(entity!=null){
+//                        try {
+//                            EntityUtils.consume(entity);
+//                        } catch (Exception e) {
+//                            logger.error("close entity error",e);
+//                        }
+//                    }
+//                    if(response!=null){
+//                        try {
+//                            response.close();
+//                        } catch (Exception e) {
+//                            logger.error("close response error",e);
+//                        }
+//                    }
+//                }
+//
+//                if(file == null){
+//                    continue;
+//                }
+//
+//                if (imgpo.getCompressSrc().contains("http://fdfs.nihaov.com")){
+//                    QINIUUtils.Result result = null;
+//                    try{
+//                        result = qiniuUtils.upload(file, fileName, "data");
+//                    }catch (Exception e){
+//                        logger.error("七牛上传错误:" + e.getMessage());
+//                        continue;
+//                    }
+//                    if(result.getRet() != 1){
+//                        logger.error("七牛上传错误:" + result.getMsg());
+//                        continue;
+//                    }
+//                    po.setSrc("http://oy3ox608v.bkt.clouddn.com/" + result.getMsg());
+//                    logger.info("------upload---id:{}------", imgpo.getId());
+//                }
+//                else{
+//                    po.setSrc(imgpo.getCompressSrc());
+//                }
+//                int a = dataDAO.insert(po);
+//                logger.info("------insert---id:{}---a:{}", imgpo.getId(), a);
+//            }
+//        }
+//    }
 
     @Test
     public void kroego(){
