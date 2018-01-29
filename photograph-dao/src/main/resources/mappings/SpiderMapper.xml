@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nihaov.photograph.dao.ISpiderDAO">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.nihaov.photograph.pojo.po.SpiderImgPO">
+        insert ignore into tb_spider_img(save_path,src,title,tag,created_at,flag)
+        values(#{savePath},#{src},#{title},#{tag},now(),0)
+    </insert>
+    <select id="selectBySrc" resultType="com.nihaov.photograph.pojo.po.SpiderImgPO">
+        select * from tb_spider_img where src=#{src}
+    </select>
+    <select id="selectCountByFlag" resultType="java.lang.Long">
+        select count(*) from tb_spider_img where flag=#{flag}
+    </select>
+    <select id="selectByFlag" resultType="com.nihaov.photograph.pojo.po.SpiderImgPO">
+        select * from tb_spider_img where flag=#{flag} order by id
+    </select>
+    <insert id="insertImg" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.nihaov.photograph.pojo.po.ImagePO">
+        insert into tb_image(id,title,compress_src,src,width,height,created_at,flag,uid)
+        values(#{id},#{title},#{compressSrc},#{src},#{width},
+        #{height},#{createdAt},1,-1)
+    </insert>
+    <select id="selectTagByName" resultType="com.nihaov.photograph.pojo.po.TagPO">
+        select * from tb_tag where name=#{name}
+    </select>
+    <insert id="insertTag" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.nihaov.photograph.pojo.po.TagPO">
+        insert IGNORE into tb_tag(type,name)
+        values(#{type},#{name})
+    </insert>
+    <insert id="insertImage2Tag" parameterType="com.nihaov.photograph.pojo.po.Image2TagPO">
+        insert into tb_image2tag
+        values(#{imageId},#{tagId})
+    </insert>
+    <update id="updateFlag">
+        update tb_spider_img set flag=#{flag} where id=#{id}
+    </update>
+</mapper>

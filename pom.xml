@@ -13,6 +13,7 @@
         <module>photograph-dao</module>
         <module>photograph-service</module>
         <module>photograph-web</module>
+        <module>photograph-spider</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -302,6 +303,11 @@
                 <groupId>com.qiniu</groupId>
                 <artifactId>qiniu-java-sdk</artifactId>
                 <version>7.2.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>1.10.2</version>
             </dependency>
 
         </dependencies>
