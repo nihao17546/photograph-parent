@@ -3,9 +3,11 @@ package com.nihaov.photograph.spider.controller;
 import com.nihaov.photograph.dao.ISpiderDAO;
 import com.nihaov.photograph.spider.model.JsonResult;
 import com.nihaov.photograph.spider.model.SpiderException;
+import com.nihaov.photograph.spider.model.enmus.SpiderSourceEnum;
 import com.nihaov.photograph.spider.service.ISpiderService;
 import com.nihaov.photograph.spider.util.ImageHandler;
 import com.nihaov.photograph.spider.util.TopitSpider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,10 +25,13 @@ public class SpiderController {
     private ISpiderDAO spiderDAO;
     @Resource
     private ISpiderService spiderService;
+    @Value("#{configProperties['savePathPrefix']}")
+    private String savePathPrefix;
 
     @PostConstruct
     public void init(){
         TopitSpider.build().setSpiderDAO(spiderDAO);
+        TopitSpider.build().setSavePathPrefix(savePathPrefix);
         ImageHandler.build().setSpiderDAO(spiderDAO);
         ImageHandler.build().setSpiderService(spiderService);
     }
@@ -51,7 +56,7 @@ public class SpiderController {
     @ResponseBody
     public String start(){
         try {
-            TopitSpider.build().start();
+            TopitSpider.build().start(SpiderSourceEnum.TOPIT);
             return JsonResult.success("操作成功").json();
         } catch (SpiderException e) {
             return JsonResult.fail(e.getMessage()).json();

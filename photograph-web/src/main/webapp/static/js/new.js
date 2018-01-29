@@ -125,7 +125,7 @@ function appenPic(obj) {
         '</div> ' +
         '<img class="slide-img" alt="'+obj.title+'" img-width="'+obj.width+'" img-height="'+obj.height+'" large-src="'+obj.src+'" onclick="imgclick(this)" src="'+obj.compressSrc+'" onload="imgload(this)" onerror="imgerror(this)"> ' +
         '</div> ';
-    var wi=obj.width,he=obj.height;
+    var wi = Math.min(obj.width, 200), he = Math.min(obj.height, 300);
     var to=he/wi;
     var appDiv=put1;
     if(h2<h1){

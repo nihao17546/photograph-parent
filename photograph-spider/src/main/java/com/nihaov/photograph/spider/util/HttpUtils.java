@@ -1,7 +1,6 @@
 package com.nihaov.photograph.spider.util;
 
 import com.nihaov.photograph.common.utils.HttpClientUtils;
-import com.nihaov.photograph.common.utils.SimpleDateUtil;
 import com.nihaov.photograph.pojo.po.SpiderImgPO;
 import com.nihaov.photograph.spider.model.HProxy;
 import org.apache.http.HttpEntity;
@@ -15,16 +14,12 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -93,7 +88,7 @@ public class HttpUtils {
         return builder.build();
     }
 
-    public static SpiderImgPO download(String src, String userAgent){
+    public static SpiderImgPO download(String src, String savePath, String userAgent){
         logger.info("------------------------下载图片[{}]-----------------------------", src);
         URLConnection conn = null;
         for(int i = 1; i <= 5; i++){
@@ -115,11 +110,6 @@ public class HttpUtils {
             }
         }
         if(conn != null){
-            Date now = new Date();
-            String savePath = "/Users/nihao/mydata/ftp/"
-                    + SimpleDateUtil.shortFormat(now).replaceAll("-", "") + "/"
-                    + now.getHours() + "/"
-                    + System.currentTimeMillis() + getTypeStr(src);
             File saveFile = new File(savePath);
             if(!saveFile.getParentFile().exists()){
                 saveFile.getParentFile().mkdirs();
@@ -147,7 +137,7 @@ public class HttpUtils {
         return null;
     }
 
-    private static String getTypeStr(String src){
+    public static String getTypeStr(String src){
         int index;
         if((index = src.lastIndexOf("."))!=-1&&
                 (src.substring(index).equalsIgnoreCase(".png")||
