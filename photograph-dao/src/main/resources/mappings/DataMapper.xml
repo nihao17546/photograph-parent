@@ -51,4 +51,7 @@
     <update id="updateCompress">
         update tb_image set compress_src=#{compressSrc} where id=#{id}
     </update>
+    <update id="updateCompressAndSrc">
+        update tb_image set compress_src=#{compressSrc},src=#{src} where id=#{id}
+    </update>
 </mapper>

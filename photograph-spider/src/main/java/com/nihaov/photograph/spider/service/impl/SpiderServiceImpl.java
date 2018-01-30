@@ -40,6 +40,8 @@ public class SpiderServiceImpl implements ISpiderService {
     private String accessKey;
     private String secretKey;
 
+    private String imgHost = "http://img.nihaov.com/";
+
     @PostConstruct
     public void init(){
         solrServer = new HttpSolrServer(coreUrl);
@@ -56,13 +58,6 @@ public class SpiderServiceImpl implements ISpiderService {
             logger.error("文件[{}]不存在", spiderImgPO.getSavePath());
             return;
         }
-        QiNiuUploadUtils.Result result = QiNiuUploadUtils.upload(
-                file, spiderImgPO.getSavePath().replaceAll("/","_"), "data", accessKey, secretKey
-        );
-        if(result.getRet() == 0){
-            logger.error("文件[{}]上传失败", spiderImgPO.getSavePath());
-            return;
-        }
         int width = -1;
         int height = -1;
         try {
@@ -72,10 +67,18 @@ public class SpiderServiceImpl implements ISpiderService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        QiNiuUploadUtils.Result result = QiNiuUploadUtils.upload(
+                file, spiderImgPO.getSavePath().replaceAll("/","_"), "data", accessKey, secretKey
+        );
+        if(result.getRet() == 0){
+            logger.error("文件[{}]上传失败", spiderImgPO.getSavePath());
+            return;
+        }
         ImagePO imagePO = new ImagePO();
         imagePO.setTitle(spiderImgPO.getTitle());
-        imagePO.setSrc("http://oy3ox608v.bkt.clouddn.com/" + result.getMsg());
-        imagePO.setCompressSrc("http://oy3ox608v.bkt.clouddn.com/" + result.getMsg() + "-suofang");
+        imagePO.setSrc(imgHost + result.getMsg());
+        imagePO.setCompressSrc(imgHost + result.getMsg() + "-suofang");
         imagePO.setWidth(width);
         imagePO.setHeight(height);
         imagePO.setCreatedAt(spiderImgPO.getCreatedAt());
@@ -109,7 +112,7 @@ public class SpiderServiceImpl implements ISpiderService {
                     image2TagPO.setTagId(tagPO.getId());
                     spiderDAO.insertImage2Tag(image2TagPO);
                 }
-                document.addField("image_tag",tag);
+                document.addField("image_tag",tagName);
             }
         }
         spiderDAO.updateFlag(spiderImgPO.getId(), 1);

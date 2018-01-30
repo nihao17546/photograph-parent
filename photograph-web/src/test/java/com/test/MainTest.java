@@ -238,9 +238,29 @@ public class MainTest {
 //    }
 
     @Test
+    public void asdasdasd(){
+        RowBounds rowBounds = new RowBounds(0, 40000);
+        List<ImagePO> sourceList = dataDAO.selectImagePagination(rowBounds);
+        for(ImagePO imagePO : sourceList){
+            boolean b = false;
+            if(imagePO.getSrc().contains("oy3ox608v.bkt.clouddn.com")){
+                imagePO.setSrc(imagePO.getSrc().replace("oy3ox608v.bkt.clouddn.com", "img.nihaov.com"));
+                b = true;
+            }
+            if(imagePO.getCompressSrc().contains("oy3ox608v.bkt.clouddn.com")){
+                imagePO.setCompressSrc(imagePO.getCompressSrc().replace("oy3ox608v.bkt.clouddn.com", "img.nihaov.com"));
+                b = true;
+            }
+            if(b){
+                int a = dataDAO.updateCompressAndSrc(imagePO.getId(), imagePO.getCompressSrc(), imagePO.getSrc());
+            }
+        }
+    }
+
+    @Test
     public void kroego(){
-        for(int i=1;i<=10;i++){
-            RowBounds rowBounds = new RowBounds((i - 1) * 1000, 1000);
+        for(int i=1;i<=100;i++){
+            RowBounds rowBounds = new RowBounds((i - 1) * 10000, 10000);
             List<ImagePO> sourceList = dataDAO.selectImagePagination(rowBounds);
             for(ImagePO imgpo : sourceList){
                 if(!imgpo.getCompressSrc().contains("http://fdfs.nihaov.com/compress")){
