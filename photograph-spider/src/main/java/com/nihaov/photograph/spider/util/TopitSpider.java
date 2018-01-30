@@ -15,6 +15,11 @@ public class TopitSpider {
     private ISpiderDAO spiderDAO = null;
     private String savePathPrefix = null;
 
+    private SpiderSourceEnum spiderSourceEnum;
+    public SpiderSourceEnum getSource(){
+        return spiderSourceEnum;
+    }
+
     public ISpiderDAO getSpiderDAO() {
         return spiderDAO;
     }
@@ -52,6 +57,7 @@ public class TopitSpider {
         else if(sourceEnum == SpiderSourceEnum.JUJU){
             thread = new Thread(new JUJUSpiderThread(spiderDAO, savePathPrefix));
         }
+        this.spiderSourceEnum = sourceEnum;
         thread.start();
     }
 
@@ -59,6 +65,7 @@ public class TopitSpider {
         if(thread == null || !thread.isAlive()){
             throw new SpiderException("操作已经终止...");
         }
+        this.spiderSourceEnum = null;
         shutdown = true;
     }
 

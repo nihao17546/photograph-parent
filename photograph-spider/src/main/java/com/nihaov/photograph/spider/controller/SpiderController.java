@@ -6,10 +6,13 @@ import com.nihaov.photograph.spider.model.SpiderException;
 import com.nihaov.photograph.spider.model.enmus.SpiderSourceEnum;
 import com.nihaov.photograph.spider.service.ISpiderService;
 import com.nihaov.photograph.spider.util.ImageHandler;
+import com.nihaov.photograph.spider.util.JUJUSpiderThread;
 import com.nihaov.photograph.spider.util.TopitSpider;
+import com.nihaov.photograph.spider.util.TopitSpiderThread;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
@@ -45,18 +48,36 @@ public class SpiderController {
     @ResponseBody
     public String status(){
         boolean b = TopitSpider.build().isRunning();
+        String status = "休眠中...";
+        if(b){
+            SpiderSourceEnum spiderSourceEnum = TopitSpider.build().getSource();
+            if(spiderSourceEnum == SpiderSourceEnum.TOPIT){
+                status = "[TOPIT]正在运行中...";
+            }
+            else if(spiderSourceEnum == SpiderSourceEnum.JUJU){
+                status = "[JUJU]正在运行中...";
+            }
+            else {
+                status = "[NULL]正在运行中...";
+            }
+        }
         Long count = spiderDAO.selectCountByFlag(0);
         boolean c = ImageHandler.build().isRunning();
-        return JsonResult.success().pull("status", b ? "正在运行中..." : "休眠中...")
+        return JsonResult.success().pull("status", status)
                 .pull("count", count)
                 .pull("imgStatus", c ? "正在运行中..." : "休眠中...").json();
     }
 
     @RequestMapping("/start")
     @ResponseBody
-    public String start(){
+    public String start(@RequestParam(value = "type", required = false, defaultValue = "TOPIT") String type){
         try {
-            TopitSpider.build().start(SpiderSourceEnum.TOPIT);
+            if(type.equals("TOPIT")){
+                TopitSpider.build().start(SpiderSourceEnum.TOPIT);
+            }
+            else if(type.equals("JUJU")){
+                TopitSpider.build().start(SpiderSourceEnum.JUJU);
+            }
             return JsonResult.success("操作成功").json();
         } catch (SpiderException e) {
             return JsonResult.fail(e.getMessage()).json();
@@ -94,6 +115,27 @@ public class SpiderController {
         } catch (SpiderException e) {
             return JsonResult.fail(e.getMessage()).json();
         }
+    }
+
+    @RequestMapping("/juju/cookies")
+    @ResponseBody
+    public String jujuCookies(){
+        return JsonResult.success().pull("cookies", JUJUSpiderThread.showCookie()).json();
+    }
+
+    @RequestMapping("/juju/reset")
+    @ResponseBody
+    public String jujuRest(){
+        JUJUSpiderThread.resetCookie();
+        return JsonResult.success().json();
+    }
+
+    @RequestMapping("/juju/setCookie")
+    @ResponseBody
+    public String jujuSetCookie(@RequestParam("name") String name,
+                                @RequestParam("value") String value){
+        JUJUSpiderThread.setCookie(name, value);
+        return JsonResult.success().json();
     }
 
 }

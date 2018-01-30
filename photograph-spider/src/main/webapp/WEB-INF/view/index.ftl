@@ -13,19 +13,20 @@
 <table border="1">
     <tr>
         <td>爬虫状态</td>
-        <td id="status" colspan="2">未知</td>
+        <td id="status" colspan="3">未知</td>
     </tr>
     <tr>
         <td>待处理图片数量</td>
-        <td id="count" colspan="2">-1</td>
+        <td id="count" colspan="3">-1</td>
     </tr>
     <tr>
         <td>操作</td>
-        <td><button onclick="start()">运行</button></td>
+        <td><button onclick="start('TOPIT')">运行TOPIT</button></td>
+        <td><button onclick="start('JUJU')">运行JUJU</button></td>
         <td><button onclick="stop()">停止</button></td>
     </tr>
 </table>
-
+<hr>
 <table border="1">
     <tr>
         <td>图片处理状态</td>
@@ -37,9 +38,98 @@
         <td><button onclick="stopSolr()">停止</button></td>
     </tr>
 </table>
+<hr>
+<h5>JUJU cookie 操作</h5>
+<table border="1">
+    <tr>
+        <td><button onclick="jujuCookies()">查看当前cookie</button></td>
+        <td id="juju_cookies" colspan="2"></td>
+    </tr>
+    <tr>
+        <td>name:<input type="text" id="name"></td>
+        <td>value:<input type="text" id="value"></td>
+        <td><button onclick="jujuSetCookie()">添加cookie</button></td>
+    </tr>
+    <tr>
+        <td colspan="3"><button onclick="jujuReset()">重置cookie</button></td>
+    </tr>
+</table>
 
 <script src="/static/libs/jquery.min.js"></script>
 <script>
+    function jujuReset() {
+        $.ajax({
+            type:'get',
+            url:'/spider/juju/reset',
+            dataType: "json",
+            data:{
+                name: na,
+                value: va
+            },
+            success: function (data) {
+                if(data.code == 200){
+                    jujuCookies();
+                }
+                else{
+                    alert(data.message);
+                }
+            }
+        })
+    }
+    function jujuSetCookie() {
+        var na = $.trim($('#name').val());
+        var va = $.trim($('#value').val());
+        if(na == '' || va == ''){
+            alert('请填写参数')
+            return;
+        }
+        $.ajax({
+            type:'get',
+            url:'/spider/juju/setCookie',
+            dataType: "json",
+            data:{
+                name: na,
+                value: va
+            },
+            success: function (data) {
+                if(data.code == 200){
+                    $('#name').val('')
+                    $('#value').val('')
+                    jujuCookies();
+                }
+                else{
+                    alert(data.message);
+                }
+            }
+        })
+    }
+    function jujuCookies() {
+        $.ajax({
+            type:'get',
+            url:'/spider/juju/cookies',
+            dataType: "json",
+            success: function (data) {
+                $('#juju_cookies').html('');
+                if(data.code == 200){
+                    if(data.cookies.length == 0){
+                        $('#juju_cookies').html("无");
+                    }
+                    else{
+                        var cookies = data.cookies;
+                        var lis = '<ul>';
+                        for(var i=0;i<cookies.length;i++){
+                            lis = lis + '<li>' + cookies[i] + '</li>';
+                        }
+                        lis = lis + '</ul>';
+                        $('#juju_cookies').html(lis);
+                    }
+                }
+                else{
+                    alert(data.message);
+                }
+            }
+        })
+    }
     function startSolr() {
         $.ajax({
             type:'get',
@@ -60,11 +150,14 @@
             }
         })
     }
-    function start() {
+    function start(type) {
         $.ajax({
             type:'get',
             url:'/spider/start',
             dataType: "json",
+            data:{
+                type:type
+            },
             success: function (data) {
                 alert(data.message);
             }
