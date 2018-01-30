@@ -66,8 +66,9 @@ public class SpiderServiceImpl implements ISpiderService {
             BufferedImage bufferedImage = ImageIO.read(file);
             width = bufferedImage.getWidth();
             height = bufferedImage.getHeight();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error("图片宽高读取失败", e);
+            return;
         }
 
         QiNiuUploadUtils.Result result = QiNiuUploadUtils.upload(

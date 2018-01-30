@@ -77,6 +77,10 @@ public class JUJUSpiderThread implements Runnable {
             logger.info("==============开始轮循==============");
             int total = 0;
             String json = handler();
+            if(json == null){
+                ThreadUtils.sleep(10);
+                continue;
+            }
             JUJUResponse jujuResponse = JSON.parseObject(json, JUJUResponse.class);
             List<JUJUData> dataList = jujuResponse.getData();
             if(dataList != null){
