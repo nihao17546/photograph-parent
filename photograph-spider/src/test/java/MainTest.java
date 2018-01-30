@@ -26,6 +26,14 @@ public class MainTest {
     private ISpiderDAO spiderDAO;
 
     @Test
+    public void solr(){
+        spiderService.solr(1000, 10000);
+        spiderService.solr(10000, 20000);
+        spiderService.solr(20000, 30000);
+        spiderService.solr(30000, 40000);
+    }
+
+    @Test
     public void dqwdq(){
         List<SpiderImgPO> list = spiderDAO.selectByFlag(0, new RowBounds(0, 10));
         for(SpiderImgPO spiderImgPO : list){

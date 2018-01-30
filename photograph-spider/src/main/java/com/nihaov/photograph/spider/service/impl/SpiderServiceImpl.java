@@ -6,6 +6,7 @@ import com.nihaov.photograph.dao.ISpiderDAO;
 import com.nihaov.photograph.pojo.po.*;
 import com.nihaov.photograph.spider.service.ISpiderService;
 import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -124,5 +126,40 @@ public class SpiderServiceImpl implements ISpiderService {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public void solr(int from, int to) {
+        List<ImagePO> list = spiderDAO.selectByFromAndTo(from, to);
+        for(ImagePO imagePO : list){
+            List<String> tagNames = spiderDAO.selectTagNameByImageId(imagePO.getId());
+            SolrInputDocument document = new SolrInputDocument();
+            document.addField("id",imagePO.getId());
+            document.addField("image_title",imagePO.getTitle());
+            document.addField("image_compress_src",imagePO.getCompressSrc());
+            document.addField("image_src",imagePO.getSrc());
+            document.addField("image_date",imagePO.getCreatedAt());
+            document.addField("image_width",imagePO.getWidth());
+            document.addField("image_height",imagePO.getHeight());
+            if(tagNames != null){
+                for(String tagName : tagNames){
+                    document.addField("image_tag",tagName);
+                }
+            }
+            try {
+                solrServer.add(document);
+            } catch (SolrServerException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            solrServer.commit();
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

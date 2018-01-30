@@ -24,4 +24,7 @@ public interface ISpiderDAO {
     int insertImage2Tag(Image2TagPO image2TagPO);
     int updateFlag(@Param("id") Long id,
                    @Param("flag") Integer flag);
+    List<ImagePO> selectByFromAndTo(@Param("from") Integer from,
+                                    @Param("to") Integer to);
+    List<String> selectTagNameByImageId(@Param("imageId") Long imageId);
 }

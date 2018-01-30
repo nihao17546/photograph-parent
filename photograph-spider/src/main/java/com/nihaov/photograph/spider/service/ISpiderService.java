@@ -7,4 +7,5 @@ import com.nihaov.photograph.pojo.po.SpiderImgPO;
  */
 public interface ISpiderService {
     void handler(SpiderImgPO spiderImgPO);
+    void solr(int from, int to);
 }

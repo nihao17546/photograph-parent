@@ -36,4 +36,11 @@
     <update id="updateFlag">
         update tb_spider_img set flag=#{flag} where id=#{id}
     </update>
+    <select id="selectByFromAndTo" resultType="com.nihaov.photograph.pojo.po.ImagePO">
+        select * from tb_image where id BETWEEN #{from} and #{to}
+    </select>
+    <select id="selectTagNameByImageId" resultType="java.lang.String">
+        select b.name from tb_image2tag a, tb_tag b
+        where a.tag_id=b.id and a.image_id=#{imageId}
+    </select>
 </mapper>
