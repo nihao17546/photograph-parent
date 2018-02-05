@@ -5,6 +5,7 @@ import com.nihaov.photograph.common.utils.SimpleDateUtil;
 import com.nihaov.photograph.dao.ISpiderDAO;
 import com.nihaov.photograph.pojo.po.SpiderImgPO;
 import com.nihaov.photograph.spider.constant.BaseConstant;
+import com.nihaov.photograph.spider.model.HProxy;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -68,6 +69,7 @@ public class JUJUSpiderThread implements Runnable {
     @Override
     public void run() {
         logger.info("==============开始爬取==============");
+        HProxy hProxy = HProxyFactory.create();
         bre:
         while (true){
             if(TopitSpider.build().isShutdown()){
@@ -76,8 +78,9 @@ public class JUJUSpiderThread implements Runnable {
             }
             logger.info("==============开始轮循==============");
             int total = 0;
-            String json = handler();
+            String json = handler(hProxy);
             if(json == null){
+                hProxy = HProxyFactory.create();
                 ThreadUtils.sleep(10);
                 continue;
             }
@@ -134,7 +137,7 @@ public class JUJUSpiderThread implements Runnable {
         }
     }
 
-    private String handler(){
+    private String handler(HProxy hProxy){
         CookieStore cookieStore = new BasicCookieStore();
         for(Cookie cookie : prefixCookies){
             cookieStore.addCookie(cookie);
@@ -146,9 +149,11 @@ public class JUJUSpiderThread implements Runnable {
                 .setDefaultCookieStore(cookieStore)
                 .build();
         HttpPost post = new HttpPost(url);
-        post.setEntity(MultipartEntityBuilder.create().addTextBody("init", "0").build());
+//        post.setEntity(MultipartEntityBuilder.create().addTextBody("init", "0").build());
         post.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:57.0) Gecko/20100101 Firefox/57.0");
         post.addHeader("Referer", "http://juju.la/hot");
+
+//        post.setConfig(HttpUtils.getConfig(hProxy, 10000, 10000));
 
         CloseableHttpResponse response = null;
         try{

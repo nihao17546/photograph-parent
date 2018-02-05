@@ -74,7 +74,7 @@ public class HttpUtils {
         }
     }
 
-    private static RequestConfig getConfig(HProxy hProxy, Integer connectTimeout, Integer socketTimeout){
+    public static RequestConfig getConfig(HProxy hProxy, Integer connectTimeout, Integer socketTimeout){
         RequestConfig.Builder builder= RequestConfig.custom();
         if(hProxy != null){
             builder.setProxy(new HttpHost(hProxy.getHost(), hProxy.getPort()));
