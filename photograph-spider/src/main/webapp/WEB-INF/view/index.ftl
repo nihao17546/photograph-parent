@@ -23,6 +23,7 @@
         <td>操作</td>
         <td><button onclick="start('TOPIT')">运行TOPIT</button></td>
         <td><button onclick="start('JUJU')">运行JUJU</button></td>
+        <td><button onclick="start('UNSPLASH')">运行UNSPLASH</button></td>
         <td><button onclick="stop()">停止</button></td>
     </tr>
 </table>
@@ -54,9 +55,66 @@
         <td colspan="3"><button onclick="jujuReset()">重置cookie</button></td>
     </tr>
 </table>
+<hr>
+<h5>Unsplash Client ID 操作</h5>
+<table border="1">
+    <tr>
+        <td><button onclick="clientId()">查看当前Client ID</button></td>
+        <td id="client_id" colspan="2"></td>
+    </tr>
+    <tr>
+        <td>client id:<input type="text" id="client"></td>
+        <td><button onclick="setClient()">设置Client ID</button></td>
+    </tr>
+</table>
 
 <script src="/static/libs/jquery.min.js"></script>
 <script>
+    function setClient() {
+        var client = $.trim($('#client').val());
+        if(client == ''){
+            alert('请填写参数')
+            return;
+        }
+        $.ajax({
+            type:'get',
+            url:'/spider/unsplash/setClient',
+            dataType: "json",
+            data:{
+                clientId: client
+            },
+            success: function (data) {
+                if(data.code == 200){
+                    $('#client').val('')
+                    clientId();
+                }
+                else{
+                    alert(data.message);
+                }
+            }
+        })
+    }
+    function clientId() {
+        $.ajax({
+            type:'get',
+            url:'/spider/unsplash/client',
+            dataType: "json",
+            success: function (data) {
+                $('#juju_cookies').html('');
+                if(data.code == 200){
+                    if(data.client){
+                        $('#client_id').html(data.client);
+                    }
+                    else{
+                        $('#client_id').html('无');
+                    }
+                }
+                else{
+                    alert(data.message);
+                }
+            }
+        })
+    }
     function jujuReset() {
         $.ajax({
             type:'get',

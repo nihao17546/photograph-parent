@@ -70,7 +70,7 @@ public class HttpUtils {
                     logger.error("close HttpEntity error", e);
                 }
             }
-            logger.info("------------------------获取html[{}]完成-----------------------------", url);
+            logger.info("------------------------获取html[{}]操作完成-----------------------------", url);
         }
     }
 
@@ -89,7 +89,8 @@ public class HttpUtils {
     }
 
     public static SpiderImgPO download(String src, String savePath, String userAgent){
-        logger.info("------------------------下载图片[{}]-----------------------------", src);
+        logger.info("------------------------开始下载图片[{}]-----------------------------", src);
+        long start = System.currentTimeMillis();
         URLConnection conn = null;
         for(int i = 1; i <= 5; i++){
             URL ur = null;
@@ -125,6 +126,8 @@ public class HttpUtils {
                 SpiderImgPO imgPO = new SpiderImgPO();
                 imgPO.setSavePath(savePath);
                 imgPO.setSrc(src);
+                logger.info("---------------------图片[{}]下载成功,耗时{}秒---------------------",
+                        src, (System.currentTimeMillis()-start)/1000);
                 return imgPO;
             }catch (Exception e){
                 logger.error("下载图片失败,src:{},错误信息:{}",
@@ -148,7 +151,7 @@ public class HttpUtils {
             return src.substring(index);
         }
         else{
-            return ".jpg";
+            return ".jpeg";
         }
     }
 

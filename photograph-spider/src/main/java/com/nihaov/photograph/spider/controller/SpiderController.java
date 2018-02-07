@@ -5,10 +5,7 @@ import com.nihaov.photograph.spider.model.JsonResult;
 import com.nihaov.photograph.spider.model.SpiderException;
 import com.nihaov.photograph.spider.model.enmus.SpiderSourceEnum;
 import com.nihaov.photograph.spider.service.ISpiderService;
-import com.nihaov.photograph.spider.util.ImageHandler;
-import com.nihaov.photograph.spider.util.JUJUSpiderThread;
-import com.nihaov.photograph.spider.util.TopitSpider;
-import com.nihaov.photograph.spider.util.TopitSpiderThread;
+import com.nihaov.photograph.spider.util.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,15 +48,7 @@ public class SpiderController {
         String status = "休眠中...";
         if(b){
             SpiderSourceEnum spiderSourceEnum = TopitSpider.build().getSource();
-            if(spiderSourceEnum == SpiderSourceEnum.TOPIT){
-                status = "[TOPIT]正在运行中...";
-            }
-            else if(spiderSourceEnum == SpiderSourceEnum.JUJU){
-                status = "[JUJU]正在运行中...";
-            }
-            else {
-                status = "[NULL]正在运行中...";
-            }
+            status = "[" + spiderSourceEnum.name() + "]正在运行中...";
         }
         Long count = spiderDAO.selectCountByFlag(0);
         boolean c = ImageHandler.build().isRunning();
@@ -72,12 +61,7 @@ public class SpiderController {
     @ResponseBody
     public String start(@RequestParam(value = "type", required = false, defaultValue = "TOPIT") String type){
         try {
-            if(type.equals("TOPIT")){
-                TopitSpider.build().start(SpiderSourceEnum.TOPIT);
-            }
-            else if(type.equals("JUJU")){
-                TopitSpider.build().start(SpiderSourceEnum.JUJU);
-            }
+            TopitSpider.build().start(SpiderSourceEnum.valueOf(type));
             return JsonResult.success("操作成功").json();
         } catch (SpiderException e) {
             return JsonResult.fail(e.getMessage()).json();
@@ -136,6 +120,19 @@ public class SpiderController {
                                 @RequestParam("value") String value){
         JUJUSpiderThread.setCookie(name, value);
         return JsonResult.success().json();
+    }
+
+    @RequestMapping("/unsplash/setClient")
+    @ResponseBody
+    public String setClient(@RequestParam("clientId") String clientId){
+        UnsplashThread.setClientID(clientId);
+        return JsonResult.success().json();
+    }
+
+    @RequestMapping("/unsplash/client")
+    @ResponseBody
+    public String unsplashClient(){
+        return JsonResult.success().pull("client", UnsplashThread.getClientID()).json();
     }
 
 }

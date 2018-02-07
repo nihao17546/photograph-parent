@@ -57,6 +57,9 @@ public class TopitSpider {
         else if(sourceEnum == SpiderSourceEnum.JUJU){
             thread = new Thread(new JUJUSpiderThread(spiderDAO, savePathPrefix));
         }
+        else if(sourceEnum == SpiderSourceEnum.UNSPLASH){
+            thread = new Thread(new UnsplashThread(spiderDAO, savePathPrefix));
+        }
         this.spiderSourceEnum = sourceEnum;
         thread.start();
     }

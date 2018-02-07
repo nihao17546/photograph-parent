@@ -5,5 +5,6 @@ package com.nihaov.photograph.spider.model.enmus;
  */
 public enum SpiderSourceEnum {
     TOPIT,
-    JUJU
+    JUJU,
+    UNSPLASH
 }
