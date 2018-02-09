@@ -48,7 +48,7 @@ public class SpiderController {
         String status = "休眠中...";
         if(b){
             SpiderSourceEnum spiderSourceEnum = TopitSpider.build().getSource();
-            status = "[" + spiderSourceEnum.name() + "]正在运行中...";
+            status = "[" + (spiderSourceEnum == null ? "NULL" :spiderSourceEnum.name()) + "]正在运行中...";
         }
         Long count = spiderDAO.selectCountByFlag(0);
         boolean c = ImageHandler.build().isRunning();
