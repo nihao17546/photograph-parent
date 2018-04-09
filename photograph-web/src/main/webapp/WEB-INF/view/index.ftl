@@ -128,7 +128,7 @@
     <div class="navbar-inner navbar-content-center">
         <p class="text-muted credit" style="padding: 0px;margin: 5px;text-align: center;color: whitesmoke;font-size: 13px;font-weight: 200;">
             © 2017 nihao |
-            <a onclick="about()" style="color: whitesmoke;font-size: 13px;font-weight: 200;" href="javascript:void(0)">关于本站</a> |
+            <a onclick="about()" style="color: whitesmoke;font-size: 13px;font-weight: 200;" href="javascript:void(0)">微信小程序</a> |
             <a style="color: whitesmoke;font-size: 13px;font-weight: 200;" href="javascript:void(0)">蜀ICP备17018005号</a>
         </p>
     </div>

@@ -7,6 +7,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ *
+ * 德州扑克的规则不知道我理解得对不对,之前没玩过
+ * 我挑了 同花顺 和 同花 两种类型的牌来比较,同花顺比同花大,
+ * 然后如果判断出都是同一种类型的牌,那么比较最大的牌的数字大小
+ *
  * Created by nihao on 18/4/9.
  */
 public class PuKeTest {

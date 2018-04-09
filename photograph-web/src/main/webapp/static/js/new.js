@@ -205,6 +205,19 @@ $(function () {
         h = $('body').height();
         $('#show-img-div').height($(window).height());
     }
+    layer.open({
+        type: 1,
+        title: '提示',
+        skin: 'layui-layer-demo',
+        anim: 1,
+        shadeClose: true,
+        content: '' +
+        '<div style="padding: 15px;width: 230px;margin: auto">' +
+        '<p>微信扫描二维码,使用小程序,体验更多好玩功能。</p>' +
+        '<img src="http://ox2n31sqv.bkt.clouddn.com/gh_09c56cbd2e5d_258-3.jpg" width="100%">' +
+        '' +
+        '</div>'
+    });
 })
 function submi() {
     var o = $('#search_from');
@@ -383,12 +396,12 @@ function newst() {
 function about() {
     layer.open({
         type: 1,
-        title: '扫描二维码',
+        title: '使用微信扫一扫体验更多功能',
         skin: 'layui-layer-demo',
         anim: 2,
         shadeClose: true,
         content: '<div style="padding: 15px;width: 230px;">' +
-        '<img src="/static/img/wx.jpeg" width="100%">' +
+        '<img src="http://ox2n31sqv.bkt.clouddn.com/gh_09c56cbd2e5d_258-3.jpg" width="100%">' +
         '' +
         '</div>'
     });
