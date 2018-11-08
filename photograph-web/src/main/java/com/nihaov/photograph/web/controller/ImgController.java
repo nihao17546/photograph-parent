@@ -145,7 +145,7 @@ public class ImgController {
     public String getHelpSrc(HttpServletRequest request){
         DataResult dataResult = new DataResult();
         dataResult.setCode(200);
-        dataResult.setResult("http://ovstg74bg.bkt.clouddn.com/help1.png");
+        dataResult.setResult("http://mydata.appcnd.com/help1.png");
         return JSON.toJSONString(dataResult);
     }
 }

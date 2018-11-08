@@ -37,7 +37,7 @@ public class UploadController {
 
     @Resource
     private QINIUUtils qiniuUtils;
-    private final String qiniuPrefixUrl = "http://ovstg74bg.bkt.clouddn.com/";
+    private final String qiniuPrefixUrl = "http://mydata.appcnd.com/";
     @Resource
     private IMGDAO imgdao;
     @Resource
